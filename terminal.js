@@ -90,7 +90,7 @@ function syncInput(input, e) {
 }
 
 //http://www.dynamicdrive.com/forums/showthread.php?17450-Emulating-a-terminal-like-caret-with-javascript-and-css
-
+// Test
 
 /*
 // Scroll page down
