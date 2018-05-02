@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>MAINFRAME</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+  </head>
+  <body>
+    <!-- Command Line Display -->
+    <div id="txtCommandLineDisplay"></div>
+    <!-- User Input -->
+    <textarea id="inputUser" type="text" onkeydown="syncInput(this, event);" onkeyup="syncInput(this, event);" onkeypress="syncInput(this, event);"></textarea>
+    <div id="txtInputDisplay" onclick="focusInput();"></div>
+    <!-- Terminal Display Code -->
+    <script type="text/javascript" src="terminal.js"></script>
+    <!-- Script Code -->
+    <script type="text/javascript" src="script.js"></script>
+  </body>
+</html>
