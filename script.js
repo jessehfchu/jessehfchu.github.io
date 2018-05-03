@@ -29,7 +29,7 @@ function parseInput(delay, input) {
     addToQueue(new Command(tNewLine, [0]));
     if (input == "password") {
       loggedIn = true;
-      addToQueue(new Command(tPrintLine, [1000, "PASSWORD ACCEPTED", 0]));
+      addToQueue(new Command(tPrintLine, [500, "PASSWORD ACCEPTED", 0]));
       addToQueue(new Command(tNewLine, [0]));
       addToQueue(new Command(tPrint, [500, "Unlocking", 5]));
       addToQueue(new Command(tPrint, [0, "...", 500]));
@@ -51,7 +51,7 @@ function parseInput(delay, input) {
   }
   else {
     responses.shuffle();
-    addToQueue(new Command(tPrint, [0, responses[0], 50]));
+    addToQueue(new Command(tPrintLine, [0, responses[0], 50]));
   }
   setTimeout(processQueue, delay);
 }
@@ -63,20 +63,6 @@ function parseInput(delay, input) {
   addToQueue(new Command(tPrintLine, [0, String(i), 5]));
   //addToQueue(new Command(tNewLine, [5]));
 }*/
-
-Array.prototype.shuffle = function() {
-    var input = this;
-
-    for (var i = input.length-1; i >=0; i--) {
-
-        var randomIndex = Math.floor(Math.random()*(i+1));
-        var itemAtIndex = input[randomIndex];
-
-        input[randomIndex] = input[i];
-        input[i] = itemAtIndex;
-    }
-    return input;
-}
 
 // Bogosort Hello World
 var msg = Array.from("Hello World").shuffle();

@@ -6,6 +6,9 @@ const terminalElementID = "txtCommandLineDisplay";
 const terminalElement = document.getElementById(terminalElementID);
 const displayInputElementID = "txtInputDisplay";
 const displayInputElement = document.getElementById(displayInputElementID);
+const hiddenInputElementID = "hiddenInput";
+const hiddenInputElement = document.getElementById(hiddenInputElementID);
+const inputSymbol = ">>> "
 
 // Declare Global Command Queue
 var commandQueue = [];
@@ -70,11 +73,11 @@ function blinkTerminalCursor() {
 
 /* Terminal Commands */
 
-// Print a string character-by-character
+// Print a string character-by-character in a span
 function tPrint(delay, msg, speed, element = null) {
   // Only print if message is not empty
   if (msg.length > 0) {
-    // Create new div element if needed
+    // Create new span element if needed
     if (element == null) {
       element = document.createElement("span");
       terminalElement.appendChild(element);
@@ -97,6 +100,7 @@ function tPrint(delay, msg, speed, element = null) {
   }
 }
 
+// Print a string character-by-character in a div
 function tPrintLine(delay, msg, speed, element = null) {
   // Only print if message is not empty
   if (msg.length > 0) {
@@ -135,7 +139,7 @@ function tNewLine(delay) {
 
 // Sync typed input
 function syncInput() {
-  displayInputElement.innerHTML = ">>> " + userInput + "█";
+  displayInputElement.innerHTML = inputSymbol + userInput + "█";
 }
 
 // Process Key Press
@@ -147,10 +151,11 @@ function handleKeyDown(e) {
     userInput = userInput.slice(0, -1);
   }
   else if (e.key == "Enter") {
-    addToQueue(new Command(tPrintLine, [0, ">>> " + userInput, 0]));
-    addToQueue(new Command(parseInput, [500, userInput]));
+    addToQueue(new Command(tPrintLine, [500, inputSymbol + userInput, 0]));
+    addToQueue(new Command(parseInput, [0, userInput]));
     userInput = "";
   }
+  hiddenInputElement.value = "";
   syncInput();
 }
 
