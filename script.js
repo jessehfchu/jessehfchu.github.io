@@ -1,29 +1,7 @@
-//addToQueue(new Command(printString, [1000, "Test String 1", 500]));
-//addToQueue(new Command(printNewLine, [1000]));
-//addToQueue(new Command(printString, [3000, "Test String 2", 50]));
-//addToQueue(new Command(printNewLine, [1000]));
-//addToQueue(new Command(printString, [5000, "Test String 3", 5]));
-//addToQueue(new Command(printNewLine, [1000]));
-
-for (var i = 1; i <= 50; i++) {
-  addToQueue(new Command(printString, [0, "Test String " + i, 5]));
-  addToQueue(new Command(printNewLine, [5]));
+for (var i = 1; i <= 10; i++) {
+  addToQueue(new Command(tPrint, [0, "Printing Example " + i, 5]));
+  //addToQueue(new Command(tNewLine, [5]));
 }
-addToQueue(new Command(printString, [0, "Remote Test", 5]));
-
-//addToQueue("Sooo... I added support for new lines.");
-//addToQueue(newLine);
-//addToQueue("And the little arrow thing to make it look more like a console.");
-//addToQueue(newLine);
-//addToQueue("And I can directly control the delays.");
-//addToQueue(newLine);
-//addToQueue("So it pauses between lines.");
-//addToQueue(newLine);
-//addToQueue(newLine);
-//addToQueue("This is kinda cool now actually.");
-//addToQueue(newLine);
-//addToQueue("I wonder what I can build with this...");
-//addToQueue(newLine);
 
 Array.prototype.shuffle = function() {
     var input = this;

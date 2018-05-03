@@ -2,16 +2,20 @@
 const blinkRate = 500;
 const terminalElementID = "txtCommandLineDisplay";
 const terminalElement = document.getElementById(terminalElementID);
-const userInputElementID = "inputUser";
-const userInputElement = document.getElementById(userInputElementID);
 const displayInputElementID = "txtInputDisplay";
 const displayInputElement = document.getElementById(displayInputElementID);
 
 // Declare Global Command Queue
 var commandQueue = [];
 
+// Declare Global User Input
+var userInput = "";
+
+// Bind Event Handlers
+window.addEventListener("keydown", function(event) { handleKeyDown(event); });
+
 // Start Timers
-var blinkTerminalTimer = setInterval(blinkTerminalCursor, blinkRate);
+//var blinkTerminalTimer = setInterval(blinkTerminalCursor, blinkRate);
 var blinkInputTimer = setInterval(blinkInputCursor, blinkRate);
 
 // Start Queue Processor
@@ -40,12 +44,15 @@ function processQueue() {
 }
 
 // Print a string character-by-character
-function printString(delay, msg, speed) {
+function tPrint(delay, msg, speed, element = null) {
+  if (element == null) {
+    element = document.createElement("div");
+    terminalElement.appendChild(element);
+  }
   if (msg.length > 0) {
     let strArray = Array.from(msg);
-    let displayed = terminalElement.innerHTML.replace(/█/, "");
-    terminalElement.innerHTML = displayed + strArray.shift() + "█";
-    setTimeout(printString, speed, delay, strArray.join(""), speed);
+    element.innerHTML += strArray.shift();
+    setTimeout(tPrint, speed, delay, strArray.join(""), speed, element);
   }
   else {
     setTimeout(processQueue, delay);
@@ -53,7 +60,7 @@ function printString(delay, msg, speed) {
 }
 
 // Insert a page break
-function printNewLine(delay) {
+function tNewLine(delay) {
   terminalElement.appendChild(document.createElement("br"));
   setTimeout(processQueue, delay);
 }
@@ -78,19 +85,15 @@ function blinkInputCursor() {
   }
 }
 
-
-// Focuses input
-function focusInput() {
-  userInputElement.focus();
-}
-
 // Sync typed input
-function syncInput(input, e) {
-  displayInputElement.innerHTML = "> " + userInputElement.value + "█";
+function syncInput() {
+  displayInputElement.innerHTML = "> " + userInput + "█";
 }
 
-//http://www.dynamicdrive.com/forums/showthread.php?17450-Emulating-a-terminal-like-caret-with-javascript-and-css
-// Test
+// Process Key Press
+function handleKeyDown(e) {
+  addToQueue(new Command(tPrint, [0, "Key: " + e.key, 5]));
+}
 
 /*
 // Scroll page down
