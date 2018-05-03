@@ -7,7 +7,7 @@
 
 for (var i = 1; i <= 50; i++) {
   addToQueue(new Command(printString, [0, "Test String " + i, 5]));
-  //addToQueue(new Command(printNewLine, [5]));
+  addToQueue(new Command(printNewLine, [5]));
 }
 
 //addToQueue("Sooo... I added support for new lines.");
