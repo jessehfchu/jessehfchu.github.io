@@ -2,14 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MAINFRAME</title>
+    <title>TERMINAL SESSION</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
     <!-- Command Line Display -->
     <div id="txtCommandLineDisplay"></div>
     <!-- User Input -->
-    <div id="txtInputDisplay"></div>
+    <div id="txtInputDisplay" onclick="$('hiddenInput').focus();"></div>
+    <input id="hiddenInput" type="text">
     <!-- Terminal Display Code -->
     <script type="text/javascript" src="terminal.js"></script>
     <!-- Script Code -->
