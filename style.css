@@ -16,7 +16,7 @@ body {
 
   overflow-y: scroll;
   overflow-x: hidden;
-  white-space: pre;
+  white-space: pre-wrap;
 }
 
 #txtInputDisplay {
