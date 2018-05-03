@@ -1,7 +1,68 @@
-for (var i = 1; i <= 10; i++) {
-  addToQueue(new Command(tPrint, [0, "Printing Example " + i, 5]));
-  //addToQueue(new Command(tNewLine, [5]));
+addToQueue(new Command(tPrint, [500, "Initializing", 5]));
+addToQueue(new Command(tPrint, [0, "...", 500]));
+addToQueue(new Command(tPrint, [0, " Complete.", 0]));
+addToQueue(new Command(tNewLine, [0]));
+addToQueue(new Command(tNewLine, [1000]));
+
+addToQueue(new Command(tPrint, [500, "Connecting", 5]));
+addToQueue(new Command(tPrint, [0, "...", 500]));
+addToQueue(new Command(tPrint, [0, " Connected.", 0]));
+addToQueue(new Command(tNewLine, [0]));
+addToQueue(new Command(tNewLine, [1000]));
+
+addToQueue(new Command(tPrintLine, [500, "PROJECT L.I.S.A. MAINFRAME", 5]));
+addToQueue(new Command(tPrintLine, [500, "REMOTE ACCESS TERMINAL", 5]));
+addToQueue(new Command(tNewLine, [0]));
+addToQueue(new Command(tPrintLine, [0, "ENTER PASSWORD:", 5]));
+
+var loggedIn = false;
+var responses = ["... I don't understand.",
+                 "...",
+                 "What?",
+                 "What do you mean?",
+                 "What are you saying?"];
+
+function parseInput(delay, input) {
+  if (!loggedIn) {
+    addToQueue(new Command(tPrint, [500, "Verifying", 5]));
+    addToQueue(new Command(tPrint, [0, "...", 500]));
+    addToQueue(new Command(tNewLine, [0]));
+    if (input == "password") {
+      loggedIn = true;
+      addToQueue(new Command(tPrintLine, [1000, "PASSWORD ACCEPTED", 0]));
+      addToQueue(new Command(tNewLine, [0]));
+      addToQueue(new Command(tPrint, [500, "Unlocking", 5]));
+      addToQueue(new Command(tPrint, [0, "...", 500]));
+      addToQueue(new Command(tPrint, [0, " Unlocked.", 0]));
+      addToQueue(new Command(tNewLine, [0]));
+      addToQueue(new Command(tNewLine, [1000]));
+      addToQueue(new Command(tPrintLine, [2000, "Access Granted", 5]));
+      addToQueue(new Command(tNewLine, [0]));
+      addToQueue(new Command(tPrint, [1000, "...", 1000]));
+      addToQueue(new Command(tPrint, [2000, " Hello?", 50]));
+      addToQueue(new Command(tNewLine, [0]));
+      addToQueue(new Command(tPrintLine, [0, "Is somebody there?", 50]));
+    }
+    else {
+      addToQueue(new Command(tPrintLine, [500, "PASSWORD REJECTED", 0]));
+      addToQueue(new Command(tNewLine, [0]));
+      addToQueue(new Command(tPrintLine, [0, "ENTER PASSWORD:", 0]));
+    }
+  }
+  else {
+    responses.shuffle();
+    addToQueue(new Command(tPrint, [0, responses[0], 50]));
+  }
+  setTimeout(processQueue, delay);
 }
+
+//addToQueue(new Command(tPrint, [0, "L.I.S.A. v0.1", 5]));
+
+/*for (var i = 1; i <= 10; i++) {
+  addToQueue(new Command(tPrint, [0, "Printing Example ", 5]));
+  addToQueue(new Command(tPrintLine, [0, String(i), 5]));
+  //addToQueue(new Command(tNewLine, [5]));
+}*/
 
 Array.prototype.shuffle = function() {
     var input = this;
