@@ -19,6 +19,7 @@ syncInput();
 
 // Bind Event Handlers
 window.addEventListener("keydown", function(event) { handleKeyDown(event); });
+window.addEventListener("keypress", function(event) { handleKeyPress(event); });
 
 // Start Timers
 //var blinkTerminalTimer = setInterval(blinkTerminalCursor, blinkRate);
@@ -142,13 +143,19 @@ function syncInput() {
   displayInputElement.innerHTML = inputSymbol + userInput + "█";
 }
 
-// Process Key Press
+// Process Key Down
 function handleKeyDown(e) {
+  if (e.key == "Backspace") {
+    userInput = userInput.slice(0, -1);
+  }
+  hiddenInputElement.value = "";
+  syncInput();
+}
+
+// Process Key Press
+function handleKeyPress(e) {
   if (String(e.key).length == 1) {
     userInput += e.key;
-  }
-  else if (e.key == "Backspace") {
-    userInput = userInput.slice(0, -1);
   }
   else if (e.key == "Enter") {
     addToQueue(new Command(tPrintLine, [500, inputSymbol + userInput, 0]));
