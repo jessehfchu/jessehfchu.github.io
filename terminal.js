@@ -76,42 +76,19 @@ function execCommand(cmd) {
 
 /* Terminal Commands */
 
-// Print a string character-by-character in a span
-function tPrint(msg, speed) {
-  // Only print if message is not empty
-  if (msg.length > 0) {
-    // Create a new span element
-    let element = document.createElement("span");
-    terminalElement.appendChild(element);
-    tWrite(msg, speed, element);
-  }
-  else {
-    processQueue();
-  }
-}
-
-// Print a string character-by-character in a div
-function tPrintLine(msg, speed) {
-  // Only print if message is not empty
-  if (msg.length > 0) {
-    // Create a new div element
-    let element = document.createElement("div");
-    terminalElement.appendChild(element);
-    tWrite(msg, speed, element);
-  }
-  else {
-    processQueue();
-  }
-}
-
 // Writes out message at a given speed to a given element
-function tWrite(msg, speed, element) {
+function tPrint(msg, speed, newline = true, persist = true, element = null) {
   if (msg.length > 0) {
+    // Create new element if needed
+    if (element == null) {
+      element = document.createElement(newline ? "div" : "span");
+      terminalElement.appendChild(element);
+    }
     if (speed > 0) {
       // Type out for non-zero speeds
       let strArray = Array.from(msg);
       element.innerHTML += strArray.shift();
-      setTimeout(tWrite, speed, strArray.join(""), speed, element);
+      setTimeout(tPrint, speed, strArray.join(""), speed, newline, persist, element);
     }
     else {
       // Instantly display
@@ -121,6 +98,9 @@ function tWrite(msg, speed, element) {
   }
   // Resume Queue
   else {
+    if (!persist) {
+      terminalElement.lastElementChild.remove();
+    }
     processQueue();
   }
 }
@@ -128,6 +108,40 @@ function tWrite(msg, speed, element) {
 // Create a new line
 function tNewLine() {
   terminalElement.appendChild(document.createElement("br"));
+  processQueue();
+}
+
+// Blink a message a given number of times at a given speed
+function tPrintBlink(msg, count, speed, newline = true, persist = true, element = null, current = 0) {
+  if (count > 0 && current < count) {
+    // Create new element if needed
+    if (element == null) {
+      element = document.createElement(newline ? "div" : "span");
+      terminalElement.appendChild(element);
+    }
+    if (element.innerHTML == "") {
+      // Display message
+      element.innerHTML = msg;
+      current += 1;
+    }
+    else {
+      // Hide Message
+      element.innerHTML = "";
+    }
+    setTimeout(tPrintBlink, speed, msg, count, speed, newline, persist, element, current);
+  }
+  // Resume Queue
+  else {
+    if (!persist) {
+      terminalElement.lastElementChild.remove();
+    }
+    processQueue();
+  }
+}
+
+// Remove latest element
+function tRemoveLast() {
+  terminalElement.lastElementChild.remove();
   processQueue();
 }
 
@@ -175,7 +189,7 @@ function handleKeyPress(e) {
   }
   else if (e.key == "Enter") {
     // Display User Input
-    addToQueue(new Command(0, tPrintLine, [inputSymbol + userInput, 0]));
+    addToQueue(new Command(0, tPrint, [inputSymbol + userInput, 0]));
     // Parse User Input
     addToQueue(new Command(0, parseInput, [userInput]));
     userInput = "";
