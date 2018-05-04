@@ -20,6 +20,7 @@ syncInput();
 // Bind Event Handlers
 window.addEventListener("keydown", function(event) { handleKeyDown(event); });
 window.addEventListener("keypress", function(event) { handleKeyPress(event); });
+hiddenInputElement.addEventListener("input", function(event) { handleInput(event); });
 
 // Start Timers
 //var blinkTerminalTimer = setInterval(blinkTerminalCursor, blinkRate);
@@ -154,7 +155,7 @@ function handleKeyDown(e) {
 
 // Process Key Press
 function handleKeyPress(e) {
-  if (String(e.key).length == 1) {
+  if (!(document.activeElement === hiddenInputElement) && String(e.key).length == 1) {
     userInput += e.key;
   }
   else if (e.key == "Enter") {
@@ -162,6 +163,13 @@ function handleKeyPress(e) {
     addToQueue(new Command(parseInput, [0, userInput]));
     userInput = "";
   }
+  hiddenInputElement.value = "";
+  syncInput();
+}
+
+// Process Input
+function handleInput(e) {
+  userInput += e.data;
   hiddenInputElement.value = "";
   syncInput();
 }
