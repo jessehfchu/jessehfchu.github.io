@@ -2,13 +2,15 @@
 
 // Constants
 const blinkRate = 500;
+var inputSymbol = "> "
+
+// Element References
 const terminalElementID = "txtCommandLineDisplay";
 const terminalElement = document.getElementById(terminalElementID);
 const displayInputElementID = "txtInputDisplay";
 const displayInputElement = document.getElementById(displayInputElementID);
 const hiddenInputElementID = "hiddenInput";
 const hiddenInputElement = document.getElementById(hiddenInputElementID);
-const inputSymbol = ">>> "
 
 // Declare Global Command Queue
 var commandQueue = [];
@@ -23,8 +25,8 @@ window.addEventListener("keypress", function(event) { handleKeyPress(event); });
 hiddenInputElement.addEventListener("input", function(event) { handleInput(event); });
 
 // Start Timers
-//var blinkTerminalTimer = setInterval(blinkTerminalCursor, blinkRate);
-var blinkInputTimer = setInterval(blinkInputCursor, blinkRate);
+//var blinkTerminalTimer = setInterval(blinkCursor, blinkRate);
+var blinkInputTimer = setInterval(blinkCursor, blinkRate, displayInputElement);
 
 // Start Queue Processor
 processQueue();
@@ -33,8 +35,9 @@ processQueue();
 
 /* Terminal Processor */
 
-// Command Class
-function Command(func, args) {
+// Command Class Definition
+function Command(delay, func, args) {
+  this.delay = delay;
   this.func = func;
   this.args = args;
 }
@@ -48,27 +51,25 @@ function addToQueue(command) {
 function processQueue() {
   if (commandQueue.length > 0) {
     let command = commandQueue.shift();
-    command.func.apply(this, command.args);
-    scrollBottom();
+    if (command.delay > 0) {
+      // Delayed execution
+      setTimeout(execCommand, command.delay, command);
+    }
+    else {
+      // Immediate execution
+      execCommand(command);
+    }
   }
   else {
+    // Poll Queue
     setTimeout(processQueue, 50);
   }
 }
 
-// Keep page scrolled down
-function scrollBottom() {
-  terminalElement.scrollTop = terminalElement.scrollHeight - terminalElement.clientHeight;
-}
-
-// Blinks Terminal Cursor
-function blinkTerminalCursor() {
-  if (terminalElement.innerHTML.includes("█")) {
-    terminalElement.innerHTML = terminalElement.innerHTML.replace(/█/, "");
-  }
-  else {
-    terminalElement.innerHTML += "█";
-  }
+// Executes a given command with its arguments
+function execCommand(cmd) {
+  cmd.func.apply(this, cmd.args);
+  scrollBottom();
 }
 
 
@@ -76,112 +77,116 @@ function blinkTerminalCursor() {
 /* Terminal Commands */
 
 // Print a string character-by-character in a span
-function tPrint(delay, msg, speed, element = null) {
+function tPrint(msg, speed) {
   // Only print if message is not empty
   if (msg.length > 0) {
-    // Create new span element if needed
-    if (element == null) {
-      element = document.createElement("span");
-      terminalElement.appendChild(element);
-    }
-    // Type out for non-zero speeds
-    if (speed > 0) {
-      let strArray = Array.from(msg);
-      element.innerHTML += strArray.shift();
-      setTimeout(tPrint, speed, delay, strArray.join(""), speed, element);
-    }
-    // Instantly display
-    else {
-      element.innerHTML = msg;
-      setTimeout(processQueue, delay);
-    }
+    // Create a new span element
+    let element = document.createElement("span");
+    terminalElement.appendChild(element);
+    tWrite(msg, speed, element);
   }
-  // Resume Queue at string end
   else {
-    setTimeout(processQueue, delay);
+    processQueue();
   }
 }
 
 // Print a string character-by-character in a div
-function tPrintLine(delay, msg, speed, element = null) {
+function tPrintLine(msg, speed) {
   // Only print if message is not empty
   if (msg.length > 0) {
-    // Create new div element if needed
-    if (element == null) {
-      element = document.createElement("div");
-      terminalElement.appendChild(element);
-    }
-    // Type out for non-zero speeds
+    // Create a new div element
+    let element = document.createElement("div");
+    terminalElement.appendChild(element);
+    tWrite(msg, speed, element);
+  }
+  else {
+    processQueue();
+  }
+}
+
+// Writes out message at a given speed to a given element
+function tWrite(msg, speed, element) {
+  if (msg.length > 0) {
     if (speed > 0) {
+      // Type out for non-zero speeds
       let strArray = Array.from(msg);
       element.innerHTML += strArray.shift();
-      setTimeout(tPrint, speed, delay, strArray.join(""), speed, element);
+      setTimeout(tWrite, speed, strArray.join(""), speed, element);
     }
-    // Instantly display
     else {
+      // Instantly display
       element.innerHTML = msg;
-      setTimeout(processQueue, delay);
+      processQueue();
     }
   }
-  // Resume Queue at string end
+  // Resume Queue
   else {
-    setTimeout(processQueue, delay);
+    processQueue();
   }
 }
 
-// Insert a page break
-function tNewLine(delay) {
+// Create a new line
+function tNewLine() {
   terminalElement.appendChild(document.createElement("br"));
-  setTimeout(processQueue, delay);
+  processQueue();
 }
 
 
 
-/* User Input */
+/* Graphical Functions */
+
+// Keep page scrolled down
+function scrollBottom() {
+  terminalElement.scrollTop = terminalElement.scrollHeight - terminalElement.clientHeight;
+}
+
+// Blinks Cursor at given element
+function blinkCursor(element) {
+  if (element.innerHTML.includes("█")) {
+    element.innerHTML = element.innerHTML.replace(/█/, "");
+  }
+  else {
+    element.innerHTML += "█";
+  }
+}
 
 // Sync typed input
 function syncInput() {
+  hiddenInputElement.value = "";
   displayInputElement.innerHTML = inputSymbol + userInput + "█";
 }
 
-// Process Key Down
+
+
+/* Event Handlers */
+
+// Process Key Down Event
 function handleKeyDown(e) {
   if (e.key == "Backspace") {
     userInput = userInput.slice(0, -1);
   }
-  hiddenInputElement.value = "";
   syncInput();
 }
 
-// Process Key Press
+// Process Key Press Event
 function handleKeyPress(e) {
   if (!(document.activeElement === hiddenInputElement) && String(e.key).length == 1) {
     userInput += e.key;
   }
   else if (e.key == "Enter") {
-    addToQueue(new Command(tPrintLine, [500, inputSymbol + userInput, 0]));
-    addToQueue(new Command(parseInput, [0, userInput]));
+    // Display User Input
+    addToQueue(new Command(0, tPrintLine, [inputSymbol + userInput, 0]));
+    // Parse User Input
+    addToQueue(new Command(0, parseInput, [userInput]));
     userInput = "";
   }
-  hiddenInputElement.value = "";
   syncInput();
 }
 
-// Process Input
+// Process Input Event
 function handleInput(e) {
-  if (String(e.data).length == 1) {
+  if ((document.activeElement === hiddenInputElement) && String(e.data).length == 1) {
     userInput += e.data;
   }
-  hiddenInputElement.value = "";
   syncInput();
-}
-
-// Blinks Input Cursor
-function blinkInputCursor() {
-  if (displayInputElement.innerHTML.includes("█")) {
-    displayInputElement.innerHTML = displayInputElement.innerHTML.replace(/█/, "");
-  }
-  else {
-    displayInputElement.innerHTML += "█";
-  }
 }

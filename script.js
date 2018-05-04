@@ -1,19 +1,19 @@
-addToQueue(new Command(tPrint, [500, "Initializing", 5]));
-addToQueue(new Command(tPrint, [0, "...", 500]));
-addToQueue(new Command(tPrint, [0, " Complete.", 0]));
-addToQueue(new Command(tNewLine, [0]));
-addToQueue(new Command(tNewLine, [1000]));
+addToQueue(new Command(0, tPrint, ["Initializing", 5]));
+addToQueue(new Command(500, tPrint, ["...", 500]));
+addToQueue(new Command(500, tPrint, [" Complete.", 0]));
+addToQueue(new Command(0, tNewLine));
+addToQueue(new Command(0, tNewLine));
 
-addToQueue(new Command(tPrint, [500, "Connecting", 5]));
-addToQueue(new Command(tPrint, [0, "...", 500]));
-addToQueue(new Command(tPrint, [0, " Connected.", 0]));
-addToQueue(new Command(tNewLine, [0]));
-addToQueue(new Command(tNewLine, [1000]));
+addToQueue(new Command(1000, tPrint, ["Connecting", 5]));
+addToQueue(new Command(500, tPrint, ["...", 500]));
+addToQueue(new Command(500, tPrint, [" Connected.", 0]));
+addToQueue(new Command(0, tNewLine));
+addToQueue(new Command(0, tNewLine));
 
-addToQueue(new Command(tPrintLine, [500, "PROJECT L.I.S.A. MAINFRAME", 5]));
-addToQueue(new Command(tPrintLine, [500, "REMOTE ACCESS TERMINAL", 5]));
-addToQueue(new Command(tNewLine, [0]));
-addToQueue(new Command(tPrintLine, [0, "ENTER PASSWORD:", 5]));
+addToQueue(new Command(500, tPrintLine, ["PROJECT L.I.S.A. MAINFRAME", 5]));
+addToQueue(new Command(500, tPrintLine, ["REMOTE ACCESS TERMINAL", 5]));
+addToQueue(new Command(0, tNewLine));
+addToQueue(new Command(0, tPrintLine, ["ENTER PASSWORD:", 5]));
 
 var loggedIn = false;
 var responses = ["... I don't understand.",
@@ -22,38 +22,35 @@ var responses = ["... I don't understand.",
                  "What do you mean?",
                  "What are you saying?"];
 
-function parseInput(delay, input) {
+function parseInput(input) {
   if (!loggedIn) {
-    addToQueue(new Command(tPrint, [500, "Verifying", 5]));
-    addToQueue(new Command(tPrint, [0, "...", 500]));
-    addToQueue(new Command(tNewLine, [0]));
+    addToQueue(new Command(500, tPrint, ["Verifying", 5]));
+    addToQueue(new Command(500, tPrint, ["...", 500]));
     if (input == "password") {
       loggedIn = true;
-      addToQueue(new Command(tPrintLine, [500, "PASSWORD ACCEPTED", 0]));
-      addToQueue(new Command(tNewLine, [0]));
-      addToQueue(new Command(tPrint, [500, "Unlocking", 5]));
-      addToQueue(new Command(tPrint, [0, "...", 500]));
-      addToQueue(new Command(tPrint, [0, " Unlocked.", 0]));
-      addToQueue(new Command(tNewLine, [0]));
-      addToQueue(new Command(tNewLine, [1000]));
-      addToQueue(new Command(tPrintLine, [2000, "Access Granted", 5]));
-      addToQueue(new Command(tNewLine, [0]));
-      addToQueue(new Command(tPrint, [1000, "...", 1000]));
-      addToQueue(new Command(tPrint, [2000, " Hello?", 50]));
-      addToQueue(new Command(tNewLine, [0]));
-      addToQueue(new Command(tPrintLine, [0, "Is somebody there?", 50]));
+      addToQueue(new Command(500, tPrintLine, ["PASSWORD ACCEPTED", 0]));
+      addToQueue(new Command(0, tNewLine));
+      addToQueue(new Command(500, tPrint, ["Unlocking", 5]));
+      addToQueue(new Command(500, tPrint, ["...", 500]));
+      addToQueue(new Command(500, tPrint, [" Unlocked.", 0]));
+      addToQueue(new Command(0, tNewLine));
+      addToQueue(new Command(1000, tPrintLine, ["Access Granted", 5]));
+      addToQueue(new Command(0, tNewLine));
+      addToQueue(new Command(1000, tPrint, ["...", 1000]));
+      addToQueue(new Command(0, tPrint, [" Hello?", 50]));
+      addToQueue(new Command(2000, tPrintLine, ["Is somebody there?", 50]));
     }
     else {
-      addToQueue(new Command(tPrintLine, [500, "PASSWORD REJECTED", 0]));
-      addToQueue(new Command(tNewLine, [0]));
-      addToQueue(new Command(tPrintLine, [0, "ENTER PASSWORD:", 0]));
+      addToQueue(new Command(500,  tPrintLine, ["PASSWORD REJECTED", 0]));
+      addToQueue(new Command(0, tNewLine));
+      addToQueue(new Command(0, tPrintLine, ["ENTER PASSWORD:", 0]));
     }
   }
   else {
     responses.shuffle();
-    addToQueue(new Command(tPrintLine, [0, responses[0], 50]));
+    addToQueue(new Command(500, tPrintLine, [responses[0], 50]));
   }
-  setTimeout(processQueue, delay);
+  processQueue();
 }
 
 //addToQueue(new Command(tPrint, [0, "L.I.S.A. v0.1", 5]));
