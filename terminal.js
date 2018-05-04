@@ -169,7 +169,9 @@ function handleKeyPress(e) {
 
 // Process Input
 function handleInput(e) {
-  userInput += e.data;
+  if (String(e.data).length == 1) {
+    userInput += e.data;
+  }
   hiddenInputElement.value = "";
   syncInput();
 }
