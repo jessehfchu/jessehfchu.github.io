@@ -6,11 +6,11 @@ var inputSymbol = "> "
 
 // Element References
 const terminalElementID = "txtCommandLineDisplay";
-const terminalElement = document.getElementById(terminalElementID);
+const eTerminal = document.getElementById(terminalElementID);
 const displayInputElementID = "txtInputDisplay";
-const displayInputElement = document.getElementById(displayInputElementID);
+const eDisplayInput = document.getElementById(displayInputElementID);
 const hiddenInputElementID = "hiddenInput";
-const hiddenInputElement = document.getElementById(hiddenInputElementID);
+const eHiddenInput = document.getElementById(hiddenInputElementID);
 
 // Declare Global Command Queue
 var commandQueue = [];
@@ -22,11 +22,11 @@ syncInput();
 // Bind Event Handlers
 window.addEventListener("keydown", function(event) { handleKeyDown(event); });
 window.addEventListener("keypress", function(event) { handleKeyPress(event); });
-hiddenInputElement.addEventListener("input", function(event) { handleInput(event); });
+eHiddenInput.addEventListener("input", function(event) { handleInput(event); });
 
 // Start Timers
 //var blinkTerminalTimer = setInterval(blinkCursor, blinkRate);
-var blinkInputTimer = setInterval(blinkCursor, blinkRate, displayInputElement);
+var blinkInputTimer = setInterval(blinkCursor, blinkRate, eDisplayInput);
 
 // Start Queue Processor
 processQueue();
@@ -77,18 +77,18 @@ function execCommand(cmd) {
 /* Terminal Commands */
 
 // Writes out message at a given speed to a given element
-function tPrint(msg, speed, newline = true, persist = true, element = null) {
+function tPrint(msg, speed, newline = true, element = null) {
   if (msg.length > 0) {
     // Create new element if needed
     if (element == null) {
       element = document.createElement(newline ? "div" : "span");
-      terminalElement.appendChild(element);
+      eTerminal.appendChild(element);
     }
     if (speed > 0) {
       // Type out for non-zero speeds
       let strArray = Array.from(msg);
       element.innerHTML += strArray.shift();
-      setTimeout(tPrint, speed, strArray.join(""), speed, newline, persist, element);
+      setTimeout(tPrint, speed, strArray.join(""), speed, newline, element);
     }
     else {
       // Instantly display
@@ -98,26 +98,23 @@ function tPrint(msg, speed, newline = true, persist = true, element = null) {
   }
   // Resume Queue
   else {
-    if (!persist) {
-      terminalElement.lastElementChild.remove();
-    }
     processQueue();
   }
 }
 
 // Create a new line
 function tNewLine() {
-  terminalElement.appendChild(document.createElement("br"));
+  eTerminal.appendChild(document.createElement("br"));
   processQueue();
 }
 
 // Blink a message a given number of times at a given speed
-function tPrintBlink(msg, count, speed, newline = true, persist = true, element = null, current = 0) {
+function tPrintBlink(msg, count, speed, newline = true, element = null, current = 0) {
   if (count > 0 && current < count) {
     // Create new element if needed
     if (element == null) {
       element = document.createElement(newline ? "div" : "span");
-      terminalElement.appendChild(element);
+      eTerminal.appendChild(element);
     }
     if (element.innerHTML == "") {
       // Display message
@@ -128,20 +125,71 @@ function tPrintBlink(msg, count, speed, newline = true, persist = true, element 
       // Hide Message
       element.innerHTML = "";
     }
-    setTimeout(tPrintBlink, speed, msg, count, speed, newline, persist, element, current);
+    setTimeout(tPrintBlink, speed, msg, count, speed, newline, element, current);
   }
   // Resume Queue
   else {
-    if (!persist) {
-      terminalElement.lastElementChild.remove();
+    processQueue();
+  }
+}
+
+// Print a message in-place a given number of times at a given speed
+function tPrintLoop(msg, count, speed, newline = true, element = null, current = 0) {
+  if (count > 0 && current < count) {
+    // Create new element if needed
+    if (element == null) {
+      element = document.createElement(newline ? "div" : "span");
+      eTerminal.appendChild(element);
     }
+    if (element.innerHTML != msg) {
+      // Add a character
+      element.innerHTML += msg[element.innerHTML.length];
+    }
+    else {
+      // Reset to first character
+      current += 1;
+      if (current < count) {
+        element.innerHTML = msg[0];
+      }
+    }
+    setTimeout(tPrintLoop, speed, msg, count, speed, newline, element, current);
+  }
+  // Resume Queue
+  else {
+    processQueue();
+  }
+}
+
+// Load to 100% using a given increment at a given speed
+function tLoadPercent(increment, speed, newline = true, element = null, current = 0) {
+  // Create new element if needed
+  if (element == null) {
+    element = document.createElement(newline ? "div" : "span");
+    eTerminal.appendChild(element);
+  }
+  if (current <= 100) {
+    element.innerHTML = String(current) + "%";
+    current += increment;
+    setTimeout(tLoadPercent, speed, increment, speed, newline, element, current);
+  }
+  else {
+    // Resume Queue
+    element.innerHTML = "100%";
     processQueue();
   }
 }
 
 // Remove latest element
 function tRemoveLast() {
-  terminalElement.lastElementChild.remove();
+  eTerminal.lastElementChild.remove();
+  processQueue();
+}
+
+// Remove all elements
+function tRemoveAll() {
+  while (eTerminal.lastElementChild != null) {
+    eTerminal.lastElementChild.remove();
+  }
   processQueue();
 }
 
@@ -151,7 +199,7 @@ function tRemoveLast() {
 
 // Keep page scrolled down
 function scrollBottom() {
-  terminalElement.scrollTop = terminalElement.scrollHeight - terminalElement.clientHeight;
+  eTerminal.scrollTop = eTerminal.scrollHeight - eTerminal.clientHeight;
 }
 
 // Blinks Cursor at given element
@@ -166,8 +214,8 @@ function blinkCursor(element) {
 
 // Sync typed input
 function syncInput() {
-  hiddenInputElement.value = "";
-  displayInputElement.innerHTML = inputSymbol + userInput + "█";
+  eHiddenInput.value = "";
+  eDisplayInput.innerHTML = inputSymbol + userInput + "█";
 }
 
 
@@ -184,7 +232,7 @@ function handleKeyDown(e) {
 
 // Process Key Press Event
 function handleKeyPress(e) {
-  if (!(document.activeElement === hiddenInputElement) && String(e.key).length == 1) {
+  if (!(document.activeElement === eHiddenInput) && String(e.key).length == 1) {
     userInput += e.key;
   }
   else if (e.key == "Enter") {
@@ -199,7 +247,7 @@ function handleKeyPress(e) {
 
 // Process Input Event
 function handleInput(e) {
-  if ((document.activeElement === hiddenInputElement) && String(e.data).length == 1) {
+  if ((document.activeElement === eHiddenInput) && String(e.data).length == 1) {
     userInput += e.data;
   }
   syncInput();
