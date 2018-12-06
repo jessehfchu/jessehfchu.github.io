@@ -1,0 +1,49 @@
+body {
+  background-color: black;
+  font-family: monospace;
+  font-size: 16pt;
+  color: limegreen;
+
+  padding: 0;
+  margin: 0;
+}
+
+#txtCommandLineDisplay {
+  width: 100%;
+  /*height: calc(100% - 35px);*/
+  height: calc(100% - 27px);
+
+  position: absolute;
+
+  overflow-y: scroll;
+  overflow-x: hidden;
+  white-space: pre-wrap;
+}
+
+#txtInputDisplay {
+  border: thin limegreen;
+  border-style: solid none solid none;
+
+  width: 100%;
+  /*height: 33px;*/
+
+  position: fixed;
+  bottom: 0;
+
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+#hiddenInput {
+  background-color: transparent;
+  color: transparent;
+  border: none;
+  outline: none;
+
+  width: 100%;
+  /*height: 33px;*/
+
+  position: fixed;
+  bottom: 0;
+  z-index: 1;
+}
