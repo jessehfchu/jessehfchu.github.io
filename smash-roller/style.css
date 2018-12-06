@@ -39,3 +39,9 @@ body {
   text-align: center;
   font-size: 24pt;
 }
+
+#txtThemeList {
+  width: 100%;
+  text-align: center;
+  font-size: 16pt;
+}

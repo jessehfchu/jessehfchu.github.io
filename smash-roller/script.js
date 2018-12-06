@@ -3,136 +3,242 @@ const themeNameID = "txtThemeName";
 const eName = document.getElementById(themeNameID);
 const themeDescID = "txtThemeDescription";
 const eDesc = document.getElementById(themeDescID);
+const themeListID = "txtThemeList";
+const eList = document.getElementById(themeListID);
 
 // Declare Theme Array
 var listThemes = [
   // Character Selection
   {
-    name: "Random Rumble",
-    desc: "Everyone chooses Random."
+    name: "Random Fight",
+    desc: "Everyone chooses Random.",
+    list: ""
   },
   {
     name: "Ladies Night",
-    desc: "Play only as Female characters."
+    desc: "Play only as Female characters.",
+    list: ""
   },
   {
     name: "Pokemon Battle",
-    desc: "Play only as Pokemon characters."
+    desc: "Play only as Pokemon characters.",
+    list: ""
   },
   {
     name: "Hyrule Battle",
-    desc: "Play only as Zelda characters."
+    desc: "Play only as Zelda characters.",
+    list: ""
   },
   {
     name: "Mushroom Kingdom Battle",
-    desc: "Play only as Mario characters."
+    desc: "Play only as Mario characters.",
+    list: ""
+  },
+  {
+    name: "Fire Emblem Battle",
+    desc: "Play only as Fire Emblem characters.",
+    list: ""
   },
   {
     name: "Pick Mii!",
-    desc: "Play only as Mii Fighters."
+    desc: "Play only as Mii Fighters.",
+    list: ""
   },
   {
     name: "Echoes",
-    desc: "Play only as Echo characters."
+    desc: "Play only as Echo characters.",
+    list: ""
   },
   {
     name: "The Original",
-    desc: "Play only as characters from Smash 64."
+    desc: "Play only as characters from Smash 64.",
+    list: ""
   },
   {
     name: "Who's The Baddest?",
-    desc: "Play only as Villain characters."
+    desc: "Play only as Villain characters.",
+    list: ""
   },
   {
     name: "Sword Fight",
-    desc: "Play only as characters with swords."
+    desc: "Play only as characters with swords.",
+    list: ""
   },
   {
     name: "Heavyweight Division",
-    desc: "Play only as Heavyweight characters."
+    desc: "Play only as Heavyweight characters.",
+    list: "Bowser<br>\
+           King K.Rool<br>\
+           Donkey Kong<br>\
+           King Dedede<br>\
+           Ganondorf<br>\
+           Charizard<br>\
+           Incineroar"
   },
   {
     name: "Let's Trade!",
-    desc: "Play as your opponent's main character."
+    desc: "Play as your opponent's main character.",
+    list: ""
   },
   {
     name: "Mirror Match",
-    desc: "Everyone plays as the same character."
+    desc: "Everyone plays as the same character.",
+    list: ""
   },
   {
     name: "Fisticuffs",
-    desc: "Play only as unarmed characters."
+    desc: "Play only as unarmed characters.",
+    list: ""
+  },
+  {
+    name: "Royal Rumble",
+    desc: "Play only as princess characters.",
+    list: ""
+  },
+  {
+    name: "We're People Too",
+    desc: "Play only as non-human characters.",
+    list: ""
   },
   {
     name: "Cameos!",
-    desc: "Play only as third-party characters."
+    desc: "Play only as third-party characters.",
+    list: ""
   },
   {
     name: "Shaped Like A Friend",
-    desc: "Play only as small & round characters."
+    desc: "Play only as small & round characters.",
+    list: ""
   },
   {
     name: "Is It Movember?",
-    desc: "Play only as characters with facial hair."
+    desc: "Play only as characters with facial hair.",
+    list: ""
+  },
+  {
+    name: "Hat Party",
+    desc: "Play only as characters with a hat.",
+    list: ""
+  },
+  {
+    name: "Pepto-Bismol",
+    desc: "Play only as characters with a pink skin.",
+    list: ""
   },
   // Items
   {
     name: "Pokemon League",
-    desc: "Play with Pokeballs and Master Balls on."
+    desc: "Play with Pokeballs and Master Balls on.",
+    list: ""
   },
   {
     name: "You're Breakin' Mah Balls",
-    desc: "Play with Smash Balls on."
+    desc: "Play with Smash Balls on.",
+    list: ""
   },
   {
     name: "Item Frenzy",
-    desc: "Play with all items on."
+    desc: "Play with all items on.",
+    list: ""
+  },
+  {
+    name: "Just Because You Try Hard...",
+    desc: "Play with Assist Trophies on.",
+    list: ""
   },
   // Rules
   {
     name: "Smash Meters",
-    desc: "Play with Smash Meters on."
+    desc: "Play with Smash Meters on.",
+    list: ""
   },
   {
     name: "Squad Strike",
-    desc: "Play Strike Strike mode."
+    desc: "Play Strike Strike mode.",
+    list: ""
   },
   {
     name: "Stamina Battle",
-    desc: "Play using Stamina mode."
+    desc: "Play using Stamina mode.",
+    list: ""
   },
   {
     name: "Skynet",
-    desc: "Team Battle: Humans vs CPUs."
+    desc: "Team Battle: Humans vs CPUs.",
+    list: ""
   },
   {
     name: "Team amiibo",
-    desc: "Team Battle: Humans vs amiibos."
+    desc: "Team Battle: Humans vs amiibos.",
+    list: ""
   },
   {
     name: "Good vs Evil",
-    desc: "Team Battle: Heros vs Villains."
+    desc: "Team Battle: Heros vs Villains.",
+    list: "Mario/Luigi vs Bowser/Wario<br>\
+           Donkey Kong/Diddy Kong vs King K.Rool<br>\
+           Link/Toon Link/Zelda/Sheik vs Ganondorf<br>\
+           Samus vs Ridley<br>\
+           Kirby vs King Dedede<br>\
+           Fox vs Wolf<br>\
+           Pit vs Dark Pit"
+  },
+  {
+    name: "You Copycat!",
+    desc: "Team Battle: Originals vs Echoes.",
+    list: "Samus vs Dark Samus<br>\
+           Peach vs Daisy<br>\
+           Marth vs Lucina<br>\
+           Roy vs Chrom<br>\
+           Pit vs Dark Pit<br>\
+           Ryu vs Ken<br>\
+           Simon vs Richter"
   },
   // Conditions
   {
     name: "The Floor Is Lava",
-    desc: "Players must stay on platforms. (SD Penalty)"
+    desc: "Players must stay on platforms. (SD Penalty)",
+    list: ""
   },
   {
     name: "Ready, Aim, Fire!",
-    desc: "Players may only use projectile attacks. (SD Penalty)"
+    desc: "Players may only use projectile attacks. (SD Penalty)",
+    list: ""
   },
   {
     name: "Aerial Ace",
-    desc: "Players may only use aerial attacks. (SD Penalty)"
+    desc: "Players may only use aerial attacks. (SD Penalty)",
+    list: ""
   },
   {
     name: "Concrete Shoes",
-    desc: "Players may not jump. (SD Penalty)"
+    desc: "Players may not jump. (SD Penalty)",
+    list: ""
   },
   {
     name: "Sleep On The Haters",
-    desc: "Everyone plays as Jigglypuff. Only KO with Rest. (SD Penalty)"
+    desc: "Everyone plays as Jigglypuff. Players may only KO with Rest. (SD Penalty)",
+    list: ""
+  },
+  {
+    name: "NINE!",
+    desc: "Everyone plays as Mr. Game & Watch. Players may only use Judge to attack. (SD Penalty)",
+    list: ""
+  },
+  {
+    name: "Purple Power",
+    desc: "Everyone plays as Olimar. Players may only use Purple Pikmin to attack. (SD Penalty)",
+    list: ""
+  },
+  {
+    name: "Throwdown",
+    desc: "Players may only KO with Throws. (SD Penalty)",
+    list: ""
+  },
+  {
+    name: "Bully",
+    desc: "Free-For-All Time Battle: Players compete to KO a Level 1 Olimar CPU.",
+    list: ""
   }
 ];
 
@@ -140,6 +246,7 @@ function rollTheme() {
   listThemes.shuffle();
   eName.style.color = "grey";
   eDesc.style.color = "grey";
+  eList.style.color = "grey";
   displayTheme();
 }
 
@@ -160,11 +267,13 @@ function displayTheme(i = 0) {
   if (i < listThemes.length) {
     eName.innerHTML = listThemes[i].name;
     eDesc.innerHTML = listThemes[i].desc;
+    eList.innerHTML = listThemes[i].list;
   }
   else {
     // Flash Selection
     eName.style.color = eName.style.color == "white" ? "grey" : "white";
     eDesc.style.color = eDesc.style.color == "white" ? "grey" : "white";
+    eList.style.color = eList.style.color == "white" ? "grey" : "white";
   }
   if (i < listThemes.length + 6) {
     setTimeout(displayTheme, delay, i+1);
