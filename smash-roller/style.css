@@ -1,49 +1,41 @@
 body {
   background-color: black;
   font-family: monospace;
-  font-size: 16pt;
-  color: limegreen;
-
+  color: white;
   padding: 0;
   margin: 0;
 }
 
-#txtCommandLineDisplay {
+#txtHeader {
   width: 100%;
-  /*height: calc(100% - 35px);*/
-  height: calc(100% - 27px);
-
-  position: absolute;
-
-  overflow-y: scroll;
-  overflow-x: hidden;
-  white-space: pre-wrap;
+  text-align: center;
+  font-size: 48pt;
+  font-weight: bold;
 }
 
-#txtInputDisplay {
-  border: thin limegreen;
-  border-style: solid none solid none;
-
-  width: 100%;
-  /*height: 33px;*/
-
-  position: fixed;
-  bottom: 0;
-
-  vertical-align: middle;
-  white-space: nowrap;
+#divRoll {
+  text-align: center;
 }
 
-#hiddenInput {
-  background-color: transparent;
-  color: transparent;
+#btnRoll {
+  text-align: center;
+  background-color: grey;
   border: none;
-  outline: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 36px;
+}
 
+#txtThemeName {
   width: 100%;
-  /*height: 33px;*/
+  text-align: center;
+  font-size: 48pt;
+}
 
-  position: fixed;
-  bottom: 0;
-  z-index: 1;
+#txtThemeDescription {
+  width: 100%;
+  text-align: center;
+  font-size: 24pt;
 }

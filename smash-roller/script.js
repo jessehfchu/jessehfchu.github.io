@@ -1,68 +1,128 @@
-addToQueue(new Command(1000, tPrintBlink, ["INITIALIZING", 3, 500]));
-addToQueue(new Command(0, tRemoveLast));
-addToQueue(new Command(1000, tPrint, ["PLEASE STAND BY", 0, false]));
-addToQueue(new Command(500, tPrintLoop, ["...", 5, 50, false]));
-addToQueue(new Command(0, tRemoveLast));
-addToQueue(new Command(0, tRemoveLast));
+// Element References
+const themeNameID = "txtThemeName";
+const eName = document.getElementById(themeNameID);
+const themeDescID = "txtThemeDescription";
+const eDesc = document.getElementById(themeDescID);
 
-addToQueue(new Command(500, tPrint, ["CONNECTING", 0, false]));
-addToQueue(new Command(500, tPrintLoop, ["...", 5, 50, false]));
-addToQueue(new Command(0, tRemoveLast));
-addToQueue(new Command(0, tRemoveLast));
-addToQueue(new Command(500, tPrint, ["AUTHENTICATING", 0, false]));
-addToQueue(new Command(500, tPrintLoop, ["...", 5, 50, false]));
-addToQueue(new Command(0, tRemoveLast));
-addToQueue(new Command(0, tRemoveLast));
-addToQueue(new Command(500, tPrintBlink, ["CONNECTION ESTABLISHED", 3, 500]));
-addToQueue(new Command(0, tRemoveLast));
-
-addToQueue(new Command(500, tPrint, ["PROJECT L.I.S.A. MAINFRAME", 5]));
-addToQueue(new Command(500, tPrint, ["REMOTE ACCESS TERMINAL", 5]));
-addToQueue(new Command(0, tNewLine));
-addToQueue(new Command(0, tPrint, ["ENTER PASSWORD:", 5]));
-
-var loggedIn = false;
-var responses = ["... I don't understand.",
-                 "...",
-                 "What?",
-                 "What do you mean?",
-                 "What are you saying?"];
-var responseCount = 0;
-
-function parseInput(input) {
-  if (!loggedIn) {
-    addToQueue(new Command(500, tPrint, ["Verifying", 5, false]));
-    addToQueue(new Command(500, tPrintLoop, ["...", 3, 50, false]));
-    if (input == "password") {
-      loggedIn = true;
-      addToQueue(new Command(500, tPrint, ["PASSWORD ACCEPTED", 0]));
-      addToQueue(new Command(0, tNewLine));
-      addToQueue(new Command(500, tPrint, ["Unlocking", 5, false]));
-      addToQueue(new Command(500, tPrintLoop, ["...", 3, 250, false]));
-      addToQueue(new Command(500, tPrint, [" Unlocked.", 0, false]));
-      addToQueue(new Command(0, tNewLine));
-      addToQueue(new Command(1000, tPrintBlink, ["Access Granted", 3, 500]));
-      addToQueue(new Command(0, tNewLine));
-      addToQueue(new Command(1000, tPrint, ["...", 1000, false]));
-      addToQueue(new Command(0, tPrint, [" Hello?", 50, false]));
-      addToQueue(new Command(2000, tPrint, ["Is somebody there?", 50]));
-    }
-    else {
-      addToQueue(new Command(500,  tPrintBlink, ["PASSWORD REJECTED", 3, 250]));
-      addToQueue(new Command(0, tNewLine));
-      addToQueue(new Command(0, tPrint, ["ENTER PASSWORD:", 0]));
-    }
+// Declare Theme Array
+var listThemes = [
+  {
+    name: "Random Rumble",
+    desc: "Everyone chooses Random."
+  },
+  {
+    name: "Pokemon League",
+    desc: "Play with Pokeballs and Master Balls on."
+  },
+  {
+    name: "Ladies Night",
+    desc: "Play as Female characters only."
+  },
+  {
+    name: "Pokemon Battle",
+    desc: "Play as Pokemon characters only."
+  },
+  {
+    name: "Who's The Baddest?",
+    desc: "Play as Villain characters only."
+  },
+  {
+    name: "Smash Meters",
+    desc: "Play with Smash Meters on."
+  },
+  {
+    name: "You're Breakin' Mah Balls",
+    desc: "Play with Smash Balls on."
+  },
+  {
+    name: "Let's Trade!",
+    desc: "Play as your opponent's main character."
+  },
+  {
+    name: "Sword Fight",
+    desc: "Play as characters with swords only."
+  },
+  {
+    name: "Echoes",
+    desc: "Play as Echo characters only."
+  },
+  {
+    name: "Hyrule Battle",
+    desc: "Play as Zelda characters only."
+  },
+  {
+    name: "The Original",
+    desc: "Play as characters from Smash 64 only."
+  },
+  {
+    name: "Mushroom Kingdom Battle",
+    desc: "Play as Mario characters only."
+  },
+  {
+    name: "Pick Mii!",
+    desc: "Play as Mii Fighters only."
+  },
+  {
+    name: "Skynet",
+    desc: "Team Battle: Humans vs CPUs."
+  },
+  {
+    name: "Squad Strike",
+    desc: "Play Strike Strike."
+  },
+  {
+    name: "Mirror Match",
+    desc: "Everyone plays as the same character."
+  },
+  {
+    name: "Stamina Battle",
+    desc: "Play using Stamina mode."
+  },
+  {
+    name: "Heavyweight Division",
+    desc: "Play as Heavyweight characters only."
+  },
+  {
+    name: "Item Frenzy",
+    desc: "Play with all items on."
+  },
+  {
+    name: "Team Amiibo",
+    desc: "Team Battle: Humans vs amiibos."
+  },
+  {
+    name: "Good & Evil",
+    desc: "Team Battle: Heros vs Villains."
+  },
+  {
+    name: "Fisticuffs",
+    desc: "Play as unarmed characters only."
+  },
+  {
+    name: "Cameos!",
+    desc: "Play as third-party characters only."
+  },
+  {
+    name: "Shaped Like A Friend",
+    desc: "Play as small & round characters only."
   }
-  else {
-    responses.shuffle();
-    addToQueue(new Command(500, tPrint, [responses[0], 50]));
-    responseCount += 1;
-    if (responseCount > 4) {
-      addToQueue(new Command(500, tPrint, ["... I'm tired of this.", 50]));
-      addToQueue(new Command(2000, tRemoveAll));
-    }
-  }
-  processQueue();
+];
+
+function rollTheme() {
+  listThemes.shuffle();
+  eName.style.color = "grey";
+  eDesc.style.color = "grey";
+  displayTheme(0);
 }
 
-//addToQueue(new Command(tPrint, [0, "L.I.S.A. v0.1", 5]));
+function displayTheme(i) {
+  if (i < listThemes.length) {
+    eName.innerHTML = listThemes[i].name;
+    eDesc.innerHTML = listThemes[i].desc;
+    setTimeout(displayTheme, 100, i+1);
+  }
+  else {
+    eName.style.color = "white";
+    eDesc.style.color = "white";
+  }
+}

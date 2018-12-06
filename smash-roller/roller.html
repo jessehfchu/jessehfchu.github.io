@@ -2,19 +2,21 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>MAINFRAME ACCESS</title>
+    <title>Smash Battle Randomizer</title>
     <link rel="stylesheet" type="text/css" href="style.css" />
   </head>
   <body>
-    <!-- Command Line Display -->
-    <div id="txtCommandLineDisplay"></div>
-    <!-- User Input -->
-    <div id="txtInputDisplay"></div>
-    <input id="hiddenInput" type="text">
+    <!-- Header -->
+    <div id="txtHeader">Smash Battle Randomizer</div>
+    <br>
+    <!-- Button -->
+    <div id="divRoll"><button type="button" id="btnRoll" onClick="rollTheme();">Roll!</button></div>
+    <br>
+    <!-- Theme Display -->
+    <div id="txtThemeName"></div>
+    <div id="txtThemeDescription"></div>
     <!-- Extension Functions -->
     <script type="text/javascript" src="extension.js"></script>
-    <!-- Terminal Display Code -->
-    <script type="text/javascript" src="terminal.js"></script>
     <!-- Script Code -->
     <script type="text/javascript" src="script.js"></script>
   </body>
