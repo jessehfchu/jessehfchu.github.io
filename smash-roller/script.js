@@ -6,13 +6,10 @@ const eDesc = document.getElementById(themeDescID);
 
 // Declare Theme Array
 var listThemes = [
+  // Character Selection
   {
     name: "Random Rumble",
     desc: "Everyone chooses Random."
-  },
-  {
-    name: "Pokemon League",
-    desc: "Play with Pokeballs and Master Balls on."
   },
   {
     name: "Ladies Night",
@@ -23,36 +20,8 @@ var listThemes = [
     desc: "Play as Pokemon characters only."
   },
   {
-    name: "Who's The Baddest?",
-    desc: "Play as Villain characters only."
-  },
-  {
-    name: "Smash Meters",
-    desc: "Play with Smash Meters on."
-  },
-  {
-    name: "You're Breakin' Mah Balls",
-    desc: "Play with Smash Balls on."
-  },
-  {
-    name: "Let's Trade!",
-    desc: "Play as your opponent's main character."
-  },
-  {
-    name: "Sword Fight",
-    desc: "Play as characters with swords only."
-  },
-  {
-    name: "Echoes",
-    desc: "Play as Echo characters only."
-  },
-  {
     name: "Hyrule Battle",
     desc: "Play as Zelda characters only."
-  },
-  {
-    name: "The Original",
-    desc: "Play as characters from Smash 64 only."
   },
   {
     name: "Mushroom Kingdom Battle",
@@ -63,36 +32,32 @@ var listThemes = [
     desc: "Play as Mii Fighters only."
   },
   {
-    name: "Skynet",
-    desc: "Team Battle: Humans vs CPUs."
+    name: "Echoes",
+    desc: "Play as Echo characters only."
   },
   {
-    name: "Squad Strike",
-    desc: "Play Strike Strike."
+    name: "The Original",
+    desc: "Play as characters from Smash 64 only."
   },
   {
-    name: "Mirror Match",
-    desc: "Everyone plays as the same character."
+    name: "Who's The Baddest?",
+    desc: "Play as Villain characters only."
   },
   {
-    name: "Stamina Battle",
-    desc: "Play using Stamina mode."
+    name: "Sword Fight",
+    desc: "Play as characters with swords only."
   },
   {
     name: "Heavyweight Division",
     desc: "Play as Heavyweight characters only."
   },
   {
-    name: "Item Frenzy",
-    desc: "Play with all items on."
+    name: "Let's Trade!",
+    desc: "Play as your opponent's main character."
   },
   {
-    name: "Team Amiibo",
-    desc: "Team Battle: Humans vs amiibos."
-  },
-  {
-    name: "Good & Evil",
-    desc: "Team Battle: Heros vs Villains."
+    name: "Mirror Match",
+    desc: "Everyone plays as the same character."
   },
   {
     name: "Fisticuffs",
@@ -105,6 +70,53 @@ var listThemes = [
   {
     name: "Shaped Like A Friend",
     desc: "Play as small & round characters only."
+  },
+  // Items
+  {
+    name: "Pokemon League",
+    desc: "Play with Pokeballs and Master Balls on."
+  },
+  {
+    name: "You're Breakin' Mah Balls",
+    desc: "Play with Smash Balls on."
+  },
+  {
+    name: "Item Frenzy",
+    desc: "Play with all items on."
+  },
+  // Rules
+  {
+    name: "Smash Meters",
+    desc: "Play with Smash Meters on."
+  },
+  {
+    name: "Squad Strike",
+    desc: "Play Strike Strike."
+  },
+  {
+    name: "Stamina Battle",
+    desc: "Play using Stamina mode."
+  },
+  {
+    name: "Skynet",
+    desc: "Team Battle: Humans vs CPUs."
+  },
+  {
+    name: "Team Amiibo",
+    desc: "Team Battle: Humans vs amiibos."
+  },
+  {
+    name: "Good & Evil",
+    desc: "Team Battle: Heros vs Villains."
+  },
+  // Conditions
+  {
+    name: "The Floor Is Lava",
+    desc: "Only aerial attacks are permitted."
+  },
+  {
+    name: "Ready, Aim, Fire!",
+    desc: "Only projectile attacks are permitted."
   }
 ];
 
@@ -116,13 +128,17 @@ function rollTheme() {
 }
 
 function displayTheme(i) {
+  var delay = 1500/listThemes.length;
   if (i < listThemes.length) {
     eName.innerHTML = listThemes[i].name;
     eDesc.innerHTML = listThemes[i].desc;
-    setTimeout(displayTheme, 100, i+1);
   }
   else {
-    eName.style.color = "white";
-    eDesc.style.color = "white";
+    delay = 250;
+    eName.style.color = eName.style.color == "white" ? "grey" : "white";
+    eDesc.style.color = eDesc.style.color == "white" ? "grey" : "white";
+  }
+  if (i < listThemes.length + 4) {
+    setTimeout(displayTheme, delay, i+1);
   }
 }
