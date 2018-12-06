@@ -125,6 +125,11 @@ var listThemes = [
     desc: "Play only as characters with a pink skin.",
     list: ""
   },
+  {
+    name: "Crowded",
+    desc: "Everyone plays as Ice Climbers.",
+    list: ""
+  },
   // Items
   {
     name: "Pokemon League",
@@ -164,24 +169,26 @@ var listThemes = [
   },
   {
     name: "Skynet",
-    desc: "Team Battle: Humans vs CPUs.",
+    desc: "Team Battle:<br>\
+           Humans vs CPUs.",
     list: ""
   },
   {
     name: "Team amiibo",
-    desc: "Team Battle: Humans vs amiibos.",
+    desc: "Team Battle:<br>\
+           Humans vs amiibos.",
     list: ""
   },
   {
     name: "Good vs Evil",
     desc: "Team Battle: Heros vs Villains.",
-    list: "Mario/Luigi vs Bowser/Wario<br>\
-           Donkey Kong/Diddy Kong vs King K.Rool<br>\
-           Link/Toon Link/Zelda/Sheik vs Ganondorf<br>\
-           Samus vs Ridley<br>\
-           Kirby vs King Dedede<br>\
-           Fox vs Wolf<br>\
-           Pit vs Dark Pit"
+    list: "Mario       vs Bowser<br>\
+           Donkey Kong vs King K.Rool<br>\
+           Link        vs Ganondorf<br>\
+           Samus       vs Ridley<br>\
+           Kirby       vs King Dedede<br>\
+           Fox         vs Wolf<br>\
+           Pit         vs Dark Pit"
   },
   {
     name: "You Copycat!",
@@ -189,55 +196,67 @@ var listThemes = [
     list: "Samus vs Dark Samus<br>\
            Peach vs Daisy<br>\
            Marth vs Lucina<br>\
-           Roy vs Chrom<br>\
-           Pit vs Dark Pit<br>\
-           Ryu vs Ken<br>\
+           Roy   vs Chrom<br>\
+           Pit   vs Dark Pit<br>\
+           Ryu   vs Ken<br>\
            Simon vs Richter"
   },
   // Conditions
   {
     name: "The Floor Is Lava",
-    desc: "Players must stay on platforms. (SD Penalty)",
+    desc: "Players must stay on platforms.<br>\
+           (SD Penalty)",
     list: ""
   },
   {
     name: "Ready, Aim, Fire!",
-    desc: "Players may only use projectile attacks. (SD Penalty)",
+    desc: "Players may only use projectile attacks.<br>\
+           (SD Penalty)",
     list: ""
   },
   {
     name: "Aerial Ace",
-    desc: "Players may only use aerial attacks. (SD Penalty)",
+    desc: "Players may only use aerial attacks.<br>\
+           (SD Penalty)",
     list: ""
   },
   {
     name: "Concrete Shoes",
-    desc: "Players may not jump. (SD Penalty)",
+    desc: "Players may not jump.<br>\
+           (SD Penalty)",
     list: ""
   },
   {
     name: "Sleep On The Haters",
-    desc: "Everyone plays as Jigglypuff. Players may only KO with Rest. (SD Penalty)",
+    desc: "Everyone plays as Jigglypuff.<br>\
+           Players may only KO with Rest.<br>\
+           (SD Penalty)",
     list: ""
   },
   {
     name: "NINE!",
-    desc: "Everyone plays as Mr. Game & Watch. Players may only use Judge to attack. (SD Penalty)",
+    desc: "Everyone plays as Mr. Game & Watch.<br>\
+           Players may only use Judge to attack.<br>\
+           (SD Penalty)",
     list: ""
   },
   {
     name: "Purple Power",
-    desc: "Everyone plays as Olimar. Players may only use Purple Pikmin to attack. (SD Penalty)",
+    desc: "Everyone plays as Olimar.<br>\
+           Players may only use Purple Pikmin to attack.<br>\
+           (SD Penalty)",
     list: ""
   },
   {
     name: "Throwdown",
-    desc: "Players may only KO with Throws. (SD Penalty)",
+    desc: "Players may only KO with Throws.<br>\
+           (SD Penalty)",
     list: ""
   },
   {
     name: "Bully",
-    desc: "Free-For-All Time Battle: Players compete to KO a Level 1 Olimar CPU.",
+    desc: "Free-For-All Time Battle:<br>\
+           Players compete to KO a Level 1 Olimar CPU.",
     list: ""
   }
 ];
