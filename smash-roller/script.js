@@ -136,7 +136,7 @@ var listThemes = [
     list: ""
   },
   {
-    name: "<INSERT TITLE HERE>",
+    name: "INSERT TITLE HERE",
     desc: "Play only as characters with a title.",
     list: "Captain Falcon<br>\
            Dr. Mario<br>\
@@ -282,13 +282,13 @@ var listThemes = [
   },
   {
     name: "Call Shot",
-    desc: "Players must call out their target for each attack.\
+    desc: "Players must call out their target for each attack.<br>\
            (SD Penalty)",
     list: ""
   },
   {
     name: "Don't Touch The Red Button",
-    desc: "Players may not use special attacks, even to recover.\
+    desc: "Players may not use special attacks, even to recover.<br>\
            (SD Penalty)",
     list: ""
   }
@@ -296,9 +296,6 @@ var listThemes = [
 
 function rollTheme() {
   listThemes.shuffle();
-  eName.style.color = "grey";
-  eDesc.style.color = "grey";
-  eList.style.color = "grey";
   displayTheme();
 }
 
@@ -320,6 +317,9 @@ function displayTheme(i = 0) {
   }
   // Update Display
   if (i < listThemes.length) {
+    eName.style.color = "grey";
+    eDesc.style.color = "grey";
+    eList.style.color = "grey";
     eName.innerHTML = listThemes[i].name;
     eDesc.innerHTML = listThemes[i].desc;
     eList.innerHTML = listThemes[i].list;
