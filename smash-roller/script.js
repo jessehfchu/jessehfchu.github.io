@@ -315,7 +315,6 @@ var listThemes = [
            Players may only use Aerial Attacks and Falcon Punch to attack.<br>\
            (SD Penalty)",
     list: ""
-    list: ""
   }
 ];
 
