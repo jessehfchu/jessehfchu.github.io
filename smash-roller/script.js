@@ -296,6 +296,11 @@ var listThemes = [
     name: "Never Ask Me For Anything Again",
     desc: "Play Squad Strike mode. Opponents select each other's squads.",
     list: ""
+  },
+  {
+    name: "Hand Cramps",
+    desc: "Players may only use the Single Joycon controller layout.",
+    list: ""
   }
 ];
 
