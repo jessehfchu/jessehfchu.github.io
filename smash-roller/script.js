@@ -301,6 +301,21 @@ var listThemes = [
     name: "Hand Cramps",
     desc: "Players may only use the Single Joycon controller layout.",
     list: ""
+  },
+  {
+    name: "Lucky Draw",
+    desc: "Everyone plays as Peach or Daisy.<br>\
+           Players may only use items from Vegetable to attack.<br>\
+           (SD Penalty)",
+    list: ""
+  },
+  {
+    name: "Show Ya Moves!",
+    desc: "Everyone plays as Captain Falcon.<br>\
+           Players may only use Aerial Attacks and Falcon Punch to attack.<br>\
+           (SD Penalty)",
+    list: ""
+    list: ""
   }
 ];
 
