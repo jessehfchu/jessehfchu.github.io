@@ -10,7 +10,7 @@ const eList = document.getElementById(themeListID);
 var listThemes = [
   // Character Selection
   {
-    name: "Random Fight",
+    name: "A Box Of Chocolates",
     desc: "Everyone chooses Random.",
     list: ""
   },
@@ -45,12 +45,12 @@ var listThemes = [
     list: ""
   },
   {
-    name: "Echoes",
+    name: "Echoing Halls",
     desc: "Play only as Echo characters.",
     list: ""
   },
   {
-    name: "The Original",
+    name: "The Original!",
     desc: "Play only as characters from Smash 64.",
     list: ""
   },
@@ -60,7 +60,7 @@ var listThemes = [
     list: ""
   },
   {
-    name: "Sword Fight",
+    name: "Edgelords",
     desc: "Play only as characters with swords.",
     list: ""
   },
@@ -81,7 +81,7 @@ var listThemes = [
     list: ""
   },
   {
-    name: "Mirror Match",
+    name: "House Of Mirrors",
     desc: "Everyone plays as the same character.",
     list: ""
   },
@@ -227,14 +227,14 @@ var listThemes = [
   },
   {
     name: "Concrete Shoes",
-    desc: "Players may not jump.<br>\
+    desc: "Players may not jump, except to recover.<br>\
            (SD Penalty)",
     list: ""
   },
   {
     name: "Sleep On The Haters",
     desc: "Everyone plays as Jigglypuff.<br>\
-           Players may only KO with Rest.<br>\
+           Players may only KO using Rest.<br>\
            (SD Penalty)",
     list: ""
   },
@@ -254,7 +254,7 @@ var listThemes = [
   },
   {
     name: "Throwdown",
-    desc: "Players may only KO with Throws.<br>\
+    desc: "Players may only KO using Throws.<br>\
            (SD Penalty)",
     list: ""
   },
@@ -262,6 +262,12 @@ var listThemes = [
     name: "Bully",
     desc: "Free-For-All Time Battle:<br>\
            Players compete to KO a Level 1 Olimar CPU.",
+    list: ""
+  },
+  {
+    name: "Protecc Doggo",
+    desc: "Team Time Battle:<br>\
+           Teams compete to KO each other's Level 1 Isabelle CPU.",
     list: ""
   }
 ];
