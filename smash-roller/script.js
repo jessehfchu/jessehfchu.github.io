@@ -305,7 +305,14 @@ function displayTheme(i = 0) {
     eDesc.style.color = eDesc.style.color == "white" ? "grey" : "white";
     eList.style.color = eList.style.color == "white" ? "grey" : "white";
   }
+  // Call again
   if (i < listThemes.length + 6) {
     setTimeout(displayTheme, delay, i+1);
+  }
+  else {
+    // Ensure white
+    eName.style.color = "white";
+    eDesc.style.color = "white";
+    eList.style.color = "white";
   }
 }
