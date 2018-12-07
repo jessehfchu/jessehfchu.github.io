@@ -284,11 +284,14 @@ function displayTheme(i = 0) {
   // Determine Speed
   var proportion = i / listThemes.length;
   var delay = 250;
-  if (proportion < 0.75) {
+  if (proportion < 0.7) {
     delay = 1500 / listThemes.length;
   }
+  else if (proportion < 0.8) {
+    delay = 3000 / listThemes.length;
+  }
   else if (proportion < 0.9) {
-    delay = 4500 / listThemes.length;
+    delay = 45 / listThemes.length;
   }
   else if (proportion < 1) {
     delay = 9000 / listThemes.length;
