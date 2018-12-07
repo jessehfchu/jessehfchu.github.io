@@ -67,9 +67,9 @@ var listThemes = [
   {
     name: "Heavyweight Division",
     desc: "Play only as Heavyweight characters.",
-    list: "Bowser<br>\
+    list: "Donkey Kong<br>\
            King K.Rool<br>\
-           Donkey Kong<br>\
+           Bowser<br>\
            King Dedede<br>\
            Ganondorf<br>\
            Charizard<br>\
@@ -134,6 +134,16 @@ var listThemes = [
     name: "You're Welcome!",
     desc: "Each player selects another's character.",
     list: ""
+  },
+  {
+    name: "<INSERT TITLE HERE>",
+    desc: "Play only as characters with a title.",
+    list: "Captain Falcon<br>\
+           Dr. Mario<br>\
+           Mr. Game & Watch<br>\
+           King Dedede<br>\
+           Bowser Jr.<br>\
+           King K.Rool"
   },
   // Items
   {
@@ -268,6 +278,18 @@ var listThemes = [
     name: "Protecc Doggo",
     desc: "Team Time Battle:<br>\
            Teams compete to KO each other's Level 1 Isabelle CPU.",
+    list: ""
+  },
+  {
+    name: "Call Shot",
+    desc: "Players must call out their target for each attack.\
+           (SD Penalty)",
+    list: ""
+  },
+  {
+    name: "Don't Touch The Red Button",
+    desc: "Players may not use special attacks, even to recover.\
+           (SD Penalty)",
     list: ""
   }
 ];
