@@ -307,16 +307,16 @@ function displayTheme(i = 0) {
   var proportion = i / listThemes.length;
   var delay = 250;
   if (proportion < 0.7) {
-    delay = 1500 / listThemes.length;
+    delay = 1000 / listThemes.length;
   }
   else if (proportion < 0.8) {
-    delay = 3000 / listThemes.length;
+    delay = 2000 / listThemes.length;
   }
   else if (proportion < 0.9) {
-    delay = 45 / listThemes.length;
+    delay = 4000 / listThemes.length;
   }
   else if (proportion < 1) {
-    delay = 9000 / listThemes.length;
+    delay = 8000 / listThemes.length;
   }
   // Update Display
   if (i < listThemes.length) {
