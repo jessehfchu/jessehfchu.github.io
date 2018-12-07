@@ -291,6 +291,11 @@ var listThemes = [
     desc: "Players may not use special attacks, even to recover.<br>\
            (SD Penalty)",
     list: ""
+  },
+  {
+    name: "Never Ask Me For Anything Again",
+    desc: "Play Squad Strike mode. Opponents select each other's squads.",
+    list: ""
   }
 ];
 
