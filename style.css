@@ -1,0 +1,38 @@
+body {
+  background-color: black;
+  font-family: monospace;
+  color: white;
+  padding: 0;
+  margin: 0;
+}
+
+#txtHeader {
+  width: 100%;
+  text-align: center;
+  font-size: 48pt;
+  font-weight: bold;
+}
+
+.txtLinkHeader {
+  width: 100%;
+  text-align: center;
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+.lkProject {
+  width: 100%;
+  text-align: center;
+  font-size: 16pt;
+  font-weight: bold;
+}
+
+.lkProject a{
+  color: goldenrod;
+}
+
+.txtDescription {
+  width: 100%;
+  text-align: center;
+  font-size: 16pt;
+}
