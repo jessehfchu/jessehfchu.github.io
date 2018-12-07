@@ -86,7 +86,7 @@ var listThemes = [
     list: ""
   },
   {
-    name: "Fisticuffs",
+    name: "Put Up Your Dukes!",
     desc: "Play only as unarmed characters.",
     list: ""
   },
@@ -126,8 +126,13 @@ var listThemes = [
     list: ""
   },
   {
-    name: "Crowded",
+    name: "Crowded Freezer",
     desc: "Everyone plays as Ice Climbers.",
+    list: ""
+  },
+  {
+    name: "You're Welcome!",
+    desc: "Each player selects another's character.",
     list: ""
   },
   // Items
@@ -159,7 +164,7 @@ var listThemes = [
   },
   {
     name: "Squad Strike",
-    desc: "Play Strike Strike mode.",
+    desc: "Play Squad Strike mode.",
     list: ""
   },
   {
