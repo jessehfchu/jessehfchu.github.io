@@ -28,6 +28,17 @@ body {
   font-size: 36px;
 }
 
+#btnRoll:disabled {
+  text-align: center;
+  background-color: grey;
+  border: none;
+  color: silver;
+  padding: 15px 32px;
+  text-align: center;
+  display: inline-block;
+  font-size: 36px;
+}
+
 #txtThemeName {
   width: 100%;
   text-align: center;

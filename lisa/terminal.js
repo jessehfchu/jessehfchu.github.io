@@ -116,14 +116,14 @@ function tPrintBlink(msg, count, speed, newline = true, element = null, current 
       element = document.createElement(newline ? "div" : "span");
       eTerminal.appendChild(element);
     }
-    if (element.innerHTML == "") {
+    if (element.innerHTML == "&nbsp") {
       // Display message
       element.innerHTML = msg;
       current += 1;
     }
     else {
       // Hide Message
-      element.innerHTML = "";
+      element.innerHTML = "&nbsp";
     }
     setTimeout(tPrintBlink, speed, msg, count, speed, newline, element, current);
   }
@@ -204,8 +204,11 @@ function scrollBottom() {
 
 // Blinks Cursor at given element
 function blinkCursor(element) {
-  if (element.innerHTML.includes("█")) {
-    element.innerHTML = element.innerHTML.replace(/█/, "");
+  if (element.innerHTML == "█") {
+    element.innerHTML = "&nbsp";
+  }
+  else if (element.innerHTML.includes("█")) {
+    element.innerHTML = element.innerHTML.replace("█", "");
   }
   else {
     element.innerHTML += "█";
@@ -236,11 +239,13 @@ function handleKeyPress(e) {
     userInput += e.key;
   }
   else if (e.key == "Enter") {
-    // Display User Input
-    addToQueue(new Command(0, tPrint, [inputSymbol + userInput, 0]));
-    // Parse User Input
-    addToQueue(new Command(0, parseInput, [userInput]));
-    userInput = "";
+    if (commandQueue.length == 0) {
+      // Display User Input
+      addToQueue(new Command(0, tPrint, [inputSymbol + userInput, 0]));
+      // Parse User Input
+      addToQueue(new Command(0, parseInput, [userInput]));
+      userInput = "";
+    }
   }
   syncInput();
 }
