@@ -44,11 +44,13 @@ function Command(delay, func, args) {
 
 // Add Command to Queue
 function addToQueue(command) {
+  console.log("addToQueue Call");
   commandQueue.push(command);
 }
 
 // Execute available Commands, otherwise poll
 function processQueue() {
+  console.log("processQueue Call");
   if (commandQueue.length > 0) {
     let command = commandQueue.shift();
     if (command.delay > 0) {
@@ -68,6 +70,7 @@ function processQueue() {
 
 // Executes a given command with its arguments
 function execCommand(cmd) {
+  console.log("execCommand Call");
   cmd.func.apply(this, cmd.args);
   scrollBottom();
 }
@@ -78,6 +81,7 @@ function execCommand(cmd) {
 
 // Writes out message at a given speed to a given element
 function tPrint(msg, speed, newline = true, element = null) {
+  console.log("tPrint Call");
   if (msg.length > 0) {
     // Create new element if needed
     if (element == null) {
@@ -104,19 +108,21 @@ function tPrint(msg, speed, newline = true, element = null) {
 
 // Create a new line
 function tNewLine() {
+  console.log("tNewLine Call");
   eTerminal.appendChild(document.createElement("br"));
   processQueue();
 }
 
 // Blink a message a given number of times at a given speed
 function tPrintBlink(msg, count, speed, newline = true, element = null, current = 0) {
+  console.log("tPrintBlink Call");
   if (count > 0 && current < count) {
     // Create new element if needed
     if (element == null) {
       element = document.createElement(newline ? "div" : "span");
       eTerminal.appendChild(element);
     }
-    if (element.innerHTML == "&nbsp") {
+    if (element.innerHTML.includes("&nbsp")) {
       // Display message
       element.innerHTML = msg;
       current += 1;
@@ -135,6 +141,7 @@ function tPrintBlink(msg, count, speed, newline = true, element = null, current 
 
 // Print a message in-place a given number of times at a given speed
 function tPrintLoop(msg, count, speed, newline = true, element = null, current = 0) {
+  console.log("tPrintLoop Call");
   if (count > 0 && current < count) {
     // Create new element if needed
     if (element == null) {
@@ -162,6 +169,7 @@ function tPrintLoop(msg, count, speed, newline = true, element = null, current =
 
 // Load to 100% using a given increment at a given speed
 function tLoadPercent(increment, speed, newline = true, element = null, current = 0) {
+  console.log("tLoadPercent Call");
   // Create new element if needed
   if (element == null) {
     element = document.createElement(newline ? "div" : "span");
@@ -181,12 +189,14 @@ function tLoadPercent(increment, speed, newline = true, element = null, current 
 
 // Remove latest element
 function tRemoveLast() {
+  console.log("tRemoveLast Call");
   eTerminal.lastElementChild.remove();
   processQueue();
 }
 
 // Remove all elements
 function tRemoveAll() {
+  console.log("tRemoveAll Call");
   while (eTerminal.lastElementChild != null) {
     eTerminal.lastElementChild.remove();
   }
