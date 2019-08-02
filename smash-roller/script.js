@@ -5,6 +5,8 @@ const themeDescID = "txtThemeDescription";
 const eDesc = document.getElementById(themeDescID);
 const themeListID = "txtThemeList";
 const eList = document.getElementById(themeListID);
+const btnID = "btnRoll";
+const eBtn = document.getElementById(btnID);
 
 // Declare Theme Array
 var listThemes = [
@@ -319,6 +321,7 @@ var listThemes = [
 ];
 
 function rollTheme() {
+  eBtn.disabled = true;
   listThemes.shuffle();
   displayTheme();
 }
@@ -363,5 +366,6 @@ function displayTheme(i = 0) {
     eName.style.color = "white";
     eDesc.style.color = "white";
     eList.style.color = "white";
+    eBtn.disabled = false;
   }
 }
