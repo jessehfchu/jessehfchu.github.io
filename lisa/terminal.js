@@ -252,6 +252,7 @@ function handleKeyPress(e) {
     if (commandQueue.length == 0) {
       // Display User Input
       addToQueue(new Command(0, tPrint, [inputSymbol + userInput, 0]));
+      addToQueue(new Command(0, tNewLine));
       // Parse User Input
       addToQueue(new Command(0, parseInput, [userInput]));
       userInput = "";
