@@ -8,6 +8,9 @@ const eList = document.getElementById(themeListID);
 const btnID = "btnRoll";
 const eBtn = document.getElementById(btnID);
 
+// Bind Event Handlers
+eBtn.addEventListener("click", rollTheme);
+
 // Declare Theme Array
 let listThemes = [
   // Character Selection
