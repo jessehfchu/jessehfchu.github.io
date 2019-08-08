@@ -17,9 +17,9 @@ addToQueue(new Command(0, tRemoveAll));
 
 /* Script Variables */
 // Current phase of script
-var state = 0;
+let state = 0;
 // Confused responses
-var rConfused = ["... I don't understand.",
+let rConfused = ["... I don't understand.",
                  "...",
                  "What?",
                  "What do you mean?",

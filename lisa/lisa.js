@@ -2,7 +2,7 @@
 
 // Constants
 const blinkRate = 500;
-var inputSymbol = "> "
+let inputSymbol = "> "
 
 // Element References
 const terminalElementID = "txtCommandLineDisplay";
@@ -13,10 +13,10 @@ const hiddenInputElementID = "hiddenInput";
 const eHiddenInput = document.getElementById(hiddenInputElementID);
 
 // Declare Global Command Queue
-var commandQueue = [];
+let commandQueue = [];
 
 // Declare Global User Input
-var userInput = "";
+let userInput = "";
 syncInput();
 
 // Bind Event Handlers
@@ -25,8 +25,8 @@ window.addEventListener("keypress", function(event) { handleKeyPress(event); });
 eHiddenInput.addEventListener("input", function(event) { handleInput(event); });
 
 // Start Timers
-//var blinkTerminalTimer = setInterval(blinkCursor, blinkRate);
-var blinkInputTimer = setInterval(blinkCursor, blinkRate, eDisplayInput);
+//let blinkTerminalTimer = setInterval(blinkCursor, blinkRate);
+let blinkInputTimer = setInterval(blinkCursor, blinkRate, eDisplayInput);
 
 // Start Queue Processor
 processQueue();
