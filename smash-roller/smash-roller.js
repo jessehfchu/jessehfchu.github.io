@@ -9,7 +9,7 @@ const btnID = "btnRoll";
 const eBtn = document.getElementById(btnID);
 
 // Declare Theme Array
-var listThemes = [
+let listThemes = [
   // Character Selection
   {
     name: "A Box Of Chocolates",
@@ -328,8 +328,8 @@ function rollTheme() {
 
 function displayTheme(i = 0) {
   // Determine Speed
-  var proportion = i / listThemes.length;
-  var delay = 250;
+  let proportion = i / listThemes.length;
+  let delay = 250;
   if (proportion < 0.7) {
     delay = 1000 / listThemes.length;
   }

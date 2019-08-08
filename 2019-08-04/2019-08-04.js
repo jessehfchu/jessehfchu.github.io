@@ -17,17 +17,17 @@ addToQueue(new Command(0, tRemoveAll));
 
 /* Script Variables */
 // Current phase of script
-var state = 0;
-var wrongcount = 0;
-var bothercount = 0;
+let state = 0;
+let wrongcount = 0;
+let bothercount = 0;
 // Ending responses
-var rBother = ["... What?",
+let rBother = ["... What?",
                  "It's over, dude.",
                  "Stop bothering me.",
                  "What are you doing? Go celebrate with your friends.",
                  "Seriously, leave me alone."];
 // Confused responses
-var rConfused = ["... I don't understand.",
+let rConfused = ["... I don't understand.",
                  "...",
                  "What?",
                  "What do you mean?",

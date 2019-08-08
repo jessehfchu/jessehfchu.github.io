@@ -7,7 +7,7 @@
 // }
 
 /* Master Game object */
-var Game = {
+let Game = {
   // Track money
   money : 0,
   // Add money
@@ -44,7 +44,7 @@ Game.clicker.playerClick = function() {
 
 
 // /* Master Game object */
-// var Game = {};
+// let Game = {};
 // // Upgrade types
 // Game.UpgradeTypes = {
 //   Add: 0, // Additive
@@ -89,24 +89,24 @@ Game.clicker.playerClick = function() {
 // }
 // // Calculate additive bonus
 // Game.Clicker.prototype.getAddBonus = function() {
-//   var bonus = 0;
-//   for (var i = 0; i < this.addUpgrades.length; i++) {
+//   let bonus = 0;
+//   for (let i = 0; i < this.addUpgrades.length; i++) {
 //     bonus += this.addUpgrades[i].getBonus();
 //   }
 //   return bonus;
 // };
 // // Calculate multiplicative bonus
 // Game.Clicker.prototype.getMultiBonus = function() {
-//   var bonus = 1;
-//   for (var i = 0; i < this.multiUpgrades.length; i++) {
+//   let bonus = 1;
+//   for (let i = 0; i < this.multiUpgrades.length; i++) {
 //     bonus *= this.multiUpgrades[i].getBonus();
 //   }
 //   return bonus;
 // };
 // // Calculate scaling bonus
 // Game.Clicker.prototype.getScaleBonus = function() {
-//   var bonus = 1;
-//   for (var i = 0; i < this.scaleUpgrades.length; i++) {
+//   let bonus = 1;
+//   for (let i = 0; i < this.scaleUpgrades.length; i++) {
 //     bonus *= this.scaleUpgrades[i].getBonus();
 //   }
 //   return bonus;
@@ -154,7 +154,7 @@ Game.clicker.playerClick = function() {
 // };
 // // Calculate the current threshold
 // Game.Producer.prototype.currentThreshold = function() {
-//   var threshold = this.baseThreshold;
+//   let threshold = this.baseThreshold;
 //   for (upgrade in this.thresholdUpgrades) {
 //     threshold -= upgrade.getBonus();
 //   }
@@ -162,24 +162,24 @@ Game.clicker.playerClick = function() {
 // };
 // // Calculate additive bonus
 // Game.Producer.prototype.getAddBonus = function() {
-//   var bonus = 0;
-//   for (var i = 0; i < this.addUpgrades.length; i++) {
+//   let bonus = 0;
+//   for (let i = 0; i < this.addUpgrades.length; i++) {
 //     bonus += this.addUpgrades[i].getBonus();
 //   }
 //   return bonus;
 // };
 // // Calculate multiplicative bonus
 // Game.Producer.prototype.getMultiBonus = function() {
-//   var bonus = 1;
-//   for (var i = 0; i < this.multiUpgrades.length; i++) {
+//   let bonus = 1;
+//   for (let i = 0; i < this.multiUpgrades.length; i++) {
 //     bonus *= this.multiUpgrades[i].getBonus();
 //   }
 //   return bonus;
 // };
 // // Calculate scaling bonus
 // Game.Producer.prototype.getScaleBonus = function() {
-//   var bonus = 1;
-//   for (var i = 0; i < this.scaleUpgrades.length; i++) {
+//   let bonus = 1;
+//   for (let i = 0; i < this.scaleUpgrades.length; i++) {
 //     bonus *= this.scaleUpgrades[i].getBonus();
 //   }
 //   return bonus;
@@ -247,6 +247,6 @@ Game.clicker.playerClick = function() {
 // console.log("TICKING STARTED");
 // setInterval(function() { Game.testProd.tick(0.2); }, 200);
 //
-// var listprod = [Game.testProd, Game.testProd];
+// let listprod = [Game.testProd, Game.testProd];
 // listprod[0].quantityOwned = 4;
 // listprod[1].quantityOwned = 1;
