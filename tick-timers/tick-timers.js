@@ -20,15 +20,7 @@ let tickCap = 200;
 let tickTimer = setInterval(tick, Math.floor(1000/tickRate));
 
 function tick() {
-  //console.log("Tick: " + currentTick);
   currentTick = (currentTick + 1) % tickCap;
-}
-
-function updateBar(name, width) {
-  console.log("UPDATE NAME: " + name);
-  console.log("UPDATE WIDTH: " + width);
-  console.log("UPDATE ELEMENT: " + document.getElementById(name));
-  document.getElementById(name).style.width = width;
 }
 
 class Bar {
@@ -51,12 +43,6 @@ class Bar {
     if (progress >= this.threshold) {
       this.startTick = currentTick;
     }
-    console.log("CLASS ELEMENT: " + this.element);
-    console.log("CLASS FILLTIME: " + this.fillTime);
-    console.log("CLASS THRESHOLD: " + this.threshold);
-    console.log("CLASS START TICK: " + this.startTick);
-    console.log("CURRENT TICK: " + currentTick);
-    console.log("CLASS PROGRESS: " + progress);
     this.element.style.width = "" + Math.floor(100 * progress / this.threshold) + "%";
   }
 
@@ -72,49 +58,3 @@ let b3 = new Bar(eBar3, 3);
 b1.start();
 b2.start();
 b3.start();
-
-/*
-function displayTheme(i = 0) {
-  // Determine Speed
-  let proportion = i / listThemes.length;
-  let delay = 250;
-  if (proportion < 0.7) {
-    delay = 1000 / listThemes.length;
-  }
-  else if (proportion < 0.8) {
-    delay = 2000 / listThemes.length;
-  }
-  else if (proportion < 0.9) {
-    delay = 4000 / listThemes.length;
-  }
-  else if (proportion < 1) {
-    delay = 8000 / listThemes.length;
-  }
-  // Update Display
-  if (i < listThemes.length) {
-    eName.style.color = "grey";
-    eDesc.style.color = "grey";
-    eList.style.color = "grey";
-    eName.innerHTML = listThemes[i].name;
-    eDesc.innerHTML = listThemes[i].desc;
-    eList.innerHTML = listThemes[i].list;
-  }
-  else {
-    // Flash Selection
-    eName.style.color = eName.style.color == "white" ? "grey" : "white";
-    eDesc.style.color = eDesc.style.color == "white" ? "grey" : "white";
-    eList.style.color = eList.style.color == "white" ? "grey" : "white";
-  }
-  // Call again
-  if (i < listThemes.length + 6) {
-    setTimeout(displayTheme, delay, i+1);
-  }
-  else {
-    // Ensure white
-    eName.style.color = "white";
-    eDesc.style.color = "white";
-    eList.style.color = "white";
-    eBtn.disabled = false;
-  }
-}
-*/

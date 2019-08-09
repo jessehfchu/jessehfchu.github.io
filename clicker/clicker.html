@@ -4,7 +4,12 @@
     <meta charset="utf-8">
     <title>Clicker</title>
     <link rel="stylesheet" type="text/css" href="clicker.css" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- jQuery -->
+    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Extension Functions -->
+    <script defer src="../js/extension/array-shuffle.js"></script>
+    <!-- Script -->
+    <script defer src="clicker.js"></script>
   </head>
   <body>
     <!-- Header -->
@@ -18,9 +23,5 @@
     <button type="button" onClick="Game.clicker.playerClick()">Click Me!</button>
     <button type="button" onClick="buyAddBonus()">Add</button>
     <button type="button" onClick="buyMultiBonus()">Multi</button>
-    <!-- Extension Functions -->
-    <script type="text/javascript" src="../js/extension/array-shuffle.js"></script>
-    <!-- Script -->
-    <script type="text/javascript" src="clicker.js"></script>
   </body>
 </html>
