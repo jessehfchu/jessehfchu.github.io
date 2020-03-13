@@ -1,37 +1,92 @@
+/** Maze Structure **/
+// Z-Shape
 maze = [[0, 0, 0, 0, 0],
         [1, 1, 1, 1, 0],
         [0, 0, 0, 0, 0],
         [0, 1, 1, 1, 1],
         [0, 0, 0, 0, 0]];
-playerx = playery = 0;
-exitx = exity = 4;
 
-learned = [[{}, {}, {}, {}, {}],
-           [{}, {}, {}, {}, {}],
-           [{}, {}, {}, {}, {}],
-           [{}, {}, {}, {}, {}],
-           [{}, {}, {}, {}, {}]];
+/** Value Matrix **/
+// Initialize to zero
+learned = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+           [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+           [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+           [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+           [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]];
 
-for (row of learned) {
-  for (entry of row) {
-    entry["N"] = 0;
-    entry["E"] = 0;
-    entry["S"] = 0;
-    entry["W"] = 0;
+/** Player Starting Position **/
+// Top Left
+current_state = {row:0, col:0};
+
+/** Reward Position **/
+// Bottom Right
+reward_state = {row:4, col:4};
+
+/** Action Encoding **/
+// North = 0
+// East = 1
+// South = 2
+// West = 3
+
+/** Hyperparameters **/
+alpha = 0.1; // Learning Rate
+gamma = 0.6 // Discount Rate
+epsilon = 0.1 // Exploration Rate
+
+// Return next state based on current state and action
+function get_next_state(state, action) {
+  let crow = state.row;
+  let ccol = state.col;
+  switch(action) {
+    case 0:
+      if (crow == 0 || maze[crow - 1][ccol] == 1) {
+        return state;
+      }
+      else {
+        return {row: crow - 1, col: ccol};
+      }
+      break;
+    case 1:
+      if (crow == 4 || maze[crow + 1][ccol] == 1) {
+        return state;
+      }
+      else {
+        return {row: crow + 1, col: ccol};
+      }
+      break;
+    case 2:
+      if (crow == 4 || maze[crow + 1][ccol] == 1) {
+        return state;
+      }
+      else {
+        return {row: crow + 1, col: ccol};
+      }
+      break;
+    case 3:
+      break;
+    default:
+      return current_state;
+      break;
   }
 }
 
-function move(dir) {
+// Get Action
+// Get State Max Action
+// Get State Max Reward
+// Get Next State
+// Get Reward
+
+function get_reward(dir) {
   switch (dir) {
-    case "N":
-      if (playerx == 0 || maze[playerx - 1][playery] == 1) {
+    case 0:
+      if (current_state.x == 0 || maze[playerx - 1][playery] == 1) {
         hitWall(dir);
       }
       else {
         playerx -= 1;
       }
       break;
-    case "E":
+    case 1:
       if (playery == 4 || maze[playerx][playery + 1] == 1) {
         hitWall(dir);
       }
@@ -39,7 +94,7 @@ function move(dir) {
         playery += 1;
       }
       break;
-    case "S":
+    case 2:
       if (playerx == 4 || maze[playerx + 1][playery] == 1) {
         hitWall(dir);
       }
@@ -47,7 +102,7 @@ function move(dir) {
         playerx += 1;
       }
       break;
-    case "W":
+    case 3:
       if (playery == 0 || maze[playerx][playery - 1] == 1) {
         hitWall(dir);
       }
