@@ -175,14 +175,22 @@ function drawPolicy() {
 
 /** Execute one action **/
 function step() {
+  // Select Action
   let action = getAction(currentState);
+  // Determine Next State resulting from Action
   let nextState = getNextState(currentState, action);
+  // Get Reward associated with Action
   let reward = getReward(currentState, action);
+  // Get Value of Next State
   let nextReward = getStateMaxReward(nextState);
+  // Get Current Value of Action
   let currentValue = learned[currentState.row][currentState.col][action];
+  // Update Value of Action
   learned[currentState.row][currentState.col][action] = ((1 - alpha) * currentValue) + (alpha * (reward + (gamma * nextReward)));
-  currentState.row = nextState.row;
-  currentState.col = nextState.col;
+  // Update State
+  currentState = nextState;
+  //currentState.row = nextState.row;
+  //currentState.col = nextState.col;
 }
 
 /** Restart Maze **/
@@ -190,18 +198,18 @@ function restart() {
   currentState = {row:0, col:0};
 }
 
-function learn() {
+function learn(runs = 1000) {
   // Execution Loop
   let steps = 0;
   let wins = 0;
-  for (let i = 0; i < 1000; i++) {
+  for (let i = 0; i < runs; i++) {
     while (!((currentState.row == rewardState.row) && (currentState.col == rewardState.col))) {
       step();
-      console.log(currentState);
       steps++;
     }
-    console.log("Win");
     restart();
     wins++;
   }
+  console.log(steps + " Learning Steps");
+  console.log(wins + " Cycles");
 }
