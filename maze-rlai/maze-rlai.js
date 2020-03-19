@@ -379,4 +379,6 @@ canvas.addEventListener("mousedown", function(event) {
   //console.log(clickX + " X   " + clickY + " Y");
 }, false);
 
+learn();
+
 setInterval(pageLoop, 50);
