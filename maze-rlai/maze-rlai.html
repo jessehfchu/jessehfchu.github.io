@@ -3,23 +3,36 @@
   <head>
     <meta charset="utf-8">
     <title>Maze - Reinforcement Learning</title>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="maze-rlai.css" />
     <!-- jQuery -->
     <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- d3 -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
     <!-- Script Code -->
     <script defer src="maze-rlai.js"></script>
   </head>
     <body>
-      <!-- Header -->
-      <div id="txtHeader">Maze - Reinforcement Learning AI</div>
-      <br>
-      <!-- Button -->
-      <div id="divRoll"><button type="button" id="btnRoll">Roll!</button></div>
-      <br>
-      <!-- Theme Display -->
-      <div id="txtThemeName"></div>
-      <br>
-      <div id="txtThemeDescription"></div>
-      <br>
-      <div id="txtThemeList"></div>
+      <header>
+        <!-- Header -->
+        <div id="txtHeader">Maze - Reinforcement Learning AI</div>
+        <br>
+      </header>
+      <main>
+        <!-- Maze -->
+        <div id="divMaze">
+          <canvas id="canvasMaze" width="500" height="500"></canvas>
+        </div>
+        <br>
+        <!-- Information -->
+        <div id="txtThemeName"></div>
+        <br>
+        <!-- Controls -->
+        <div id="txtThemeName"></div>
+        <br>
+        <!-- Stats -->
+        <div id="txtThemeName"></div>
+        <br>
+      </main>
     </body>
 </html>

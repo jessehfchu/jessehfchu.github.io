@@ -1,26 +1,24 @@
+/** Reference to canvas element **/
+canvas = document.getElementById("canvasMaze");
+context = canvas.getContext("2d");
+
 /** Maze Structure **/
-// Z-Shape
-maze = [[0, 0, 0, 0, 0],
-        [1, 1, 1, 1, 0],
-        [0, 0, 0, 0, 0],
-        [0, 1, 1, 1, 1],
-        [0, 0, 0, 0, 0]];
+mazeRows = 10;
+mazeColumns = 10;
+maze = createMaze(mazeRows, mazeColumns);
 
 /** Value Matrix **/
-// Initialize to zero
-learned = [[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-           [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-           [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-           [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
-           [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]];
+policy = initializePolicy(maze);
 
 /** Player Starting Position **/
 // Top Left
-currentState = {row:0, col:0};
+startRow = 0;
+startColumn = 0;
+currentState = createState(startRow, startColumn);
 
-/** Reward Position **/
+/** Goal Position **/
 // Bottom Right
-rewardState = {row:4, col:4};
+goalState = createState(maze.length - 1, maze[0].length - 1);
 
 /** Action Encoding **/
 // North = 0
@@ -32,6 +30,56 @@ rewardState = {row:4, col:4};
 alpha = 0.1; // Learning Rate
 gamma = 0.6 // Discount Rate
 epsilon = 0.1 // Exploration Rate
+
+/** Create a horizontal zig-zag maze **/
+function createMaze(rows, columns) {
+  let newMaze = [];
+  for (let r = 0; r < rows; r++) {
+    let newRow = [];
+    // Alternating paths and walls
+    for (let c = 0; c < columns; c++) {
+      if ((r % 2) == 0) {
+        newRow.push(0);
+      }
+      else {
+        newRow.push(1);
+      }
+    }
+    // Remove alternating ends of walls
+    if ((r % 4) == 1) {
+      newRow[columns - 1] = 0;
+    }
+    else if ((r % 4) == 3) {
+      newRow[0] = 0;
+    }
+    newMaze.push(newRow);
+  }
+  // Make sure goal is accessible
+  newMaze[rows - 1][columns - 1] = 0;
+  return newMaze;
+}
+
+/** Create initial zeroed Value Matrix **/
+function initializePolicy(maze) {
+  let rows = maze.length;
+  let columns = maze[0].length;
+  let newPolicy = [];
+  for (let r = 0; r < rows; r++) {
+    let newRow = [];
+    // 0 Value for each action
+    for (let c = 0; c < columns; c++) {
+      newRow.push([0, 0, 0, 0]);
+    }
+    newPolicy.push(newRow);
+  }
+  // Make sure goal is accessible
+  return newPolicy;
+}
+
+/** Returns given coordinates as a state object **/
+function createState(row, col) {
+  return {row: row, col: col};
+}
 
 /** Get next state resulting from a state/action pair **/
 function getNextState(state, action) {
@@ -47,7 +95,7 @@ function getNextState(state, action) {
       }
       break;
     case 1: // East
-      if (ccol == 4 || maze[crow][ccol + 1] == 1) { // East edge or invalid
+      if (ccol == (maze[0].length - 1) || maze[crow][ccol + 1] == 1) { // East edge or invalid
         return state;
       }
       else {
@@ -55,7 +103,7 @@ function getNextState(state, action) {
       }
       break;
     case 2: // South
-      if (crow == 4 || maze[crow + 1][ccol] == 1) { // South edge or invalid
+      if (crow == (maze.length - 1) || maze[crow + 1][ccol] == 1) { // South edge or invalid
         return state;
       }
       else {
@@ -90,43 +138,48 @@ function getAction(state) {
 function getStateMaxAction(state) {
   let crow = state.row;
   let ccol = state.col;
-  return learned[crow][ccol].indexOf(Math.max(...learned[crow][ccol]));
+  return policy[crow][ccol].indexOf(Math.max(...policy[crow][ccol]));
 }
 
 /** Return the highest-value reward for a given state **/
 function getStateMaxReward(state) {
   let crow = state.row;
   let ccol = state.col;
-  return Math.max(...learned[crow][ccol]);
+  return Math.max(...policy[crow][ccol]);
 }
 
 /** Get the reward associated with a state/action pair **/
 function getReward(state, action) {
   let newState = getNextState(state, action);
+  // Invalid move
   if (newState.row == state.row && newState.col == state.col) {
     return -10;
   }
-  else if (newState.row == rewardState.row && newState.col == rewardState.col) {
+  // Reached Goal
+  else if (newState.row == goalState.row && newState.col == goalState.col) {
     return 10;
   }
+  // Valid move
   else {
     return -1;
   }
 }
 
 /** Print out the maze to console **/
-function drawMaze() {
-  for (x=0; x<5; x++) {
-    line = "";
-    for (y=0; y<5; y++) {
-      if (x == currentState.row && y == currentState.col) {
+function printMaze(maze) {
+  let rows = maze.length;
+  let columns = maze[0].length;
+  for (let r = 0; r < rows; r++) {
+    let line = "";
+    for (let c = 0; c < columns; c++) {
+      if (r == currentState.row && c == currentState.col) {
         line += " P";
       }
-      else if (x == rewardState.row && y == rewardState.col) {
+      else if (r == goalState.row && c == goalState.col) {
         line += " O";
       }
       else {
-        if (maze[x][y] == 0) {
+        if (maze[r][c] == 0) {
           line += " .";
         }
         else {
@@ -139,34 +192,38 @@ function drawMaze() {
 }
 
 /** Print out the policy to console **/
-function drawPolicy() {
-  for (x=0; x<5; x++) {
-    line = "";
-    for (y=0; y<5; y++) {
-      if (x == rewardState.row && y == rewardState.col) {
+function printPolicy(policy) {
+  let rows = maze.length;
+  let columns = maze[0].length;
+  for (let r = 0; r < rows; r++) {
+    let line = "";
+    for (let c = 0; c < columns; c++) {
+      if (r == goalState.row && c == goalState.col) {
         line += " O";
       }
-      else if (maze[x][y] == 0) {
-        let action = getStateMaxAction({row: x, col: y});
-        switch (action) {
-          case 0:
-            line += " ^";
-            break;
-          case 1:
-            line += " >";
-            break;
-          case 2:
-            line += " v";
-            break;
-          case 3:
-            line += " <";
-            break;
-          default:
-            break;
-        }
-      }
       else {
-        line += " X";
+        if (maze[r][c] == 0) {
+          let action = getStateMaxAction({row: r, col: c});
+          switch (action) {
+            case 0:
+              line += " ^";
+              break;
+            case 1:
+              line += " >";
+              break;
+            case 2:
+              line += " v";
+              break;
+            case 3:
+              line += " <";
+              break;
+            default:
+              break;
+          }
+        }
+        else {
+          line += " X";
+        }
       }
     }
     console.log(line);
@@ -184,18 +241,16 @@ function step() {
   // Get Value of Next State
   let nextReward = getStateMaxReward(nextState);
   // Get Current Value of Action
-  let currentValue = learned[currentState.row][currentState.col][action];
+  let currentValue = policy[currentState.row][currentState.col][action];
   // Update Value of Action
-  learned[currentState.row][currentState.col][action] = ((1 - alpha) * currentValue) + (alpha * (reward + (gamma * nextReward)));
+  policy[currentState.row][currentState.col][action] = ((1 - alpha) * currentValue) + (alpha * (reward + (gamma * nextReward)));
   // Update State
   currentState = nextState;
-  //currentState.row = nextState.row;
-  //currentState.col = nextState.col;
 }
 
 /** Restart Maze **/
 function restart() {
-  currentState = {row:0, col:0};
+  currentState = createState(startRow, startColumn);
 }
 
 function learn(runs = 1000) {
@@ -203,7 +258,7 @@ function learn(runs = 1000) {
   let steps = 0;
   let wins = 0;
   for (let i = 0; i < runs; i++) {
-    while (!((currentState.row == rewardState.row) && (currentState.col == rewardState.col))) {
+    while (!((currentState.row == goalState.row) && (currentState.col == goalState.col))) {
       step();
       steps++;
     }
@@ -213,3 +268,115 @@ function learn(runs = 1000) {
   console.log(steps + " Learning Steps");
   console.log(wins + " Cycles");
 }
+
+function pageLoop() {
+  step();
+  if ((currentState.row == goalState.row) && (currentState.col == goalState.col)) {
+    restart();
+  }
+  draw();
+}
+
+function draw() {
+  // Background
+  context.fillStyle = "white";
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Determine drawing dimensions
+  let rows = maze.length;
+  let columns = maze[0].length;
+  let xUnit = canvas.width / columns;
+  let yUnit = canvas.height / rows;
+
+  // Draw Walls
+  context.fillStyle = "grey";
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < columns; c++) {
+      if (maze[r][c] == 1) {
+        context.fillRect(c * xUnit, r * yUnit, xUnit, yUnit);
+      }
+    }
+  }
+
+  // Draw Policy
+  context.strokeStyle = "green";
+  context.lineWidth = 1;
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < columns; c++) {
+      if (maze[r][c] == 0) {
+        let action = getStateMaxAction({row: r, col: c});
+        switch (action) {
+          case 0:
+            context.beginPath();
+            context.moveTo(c * xUnit, (r + 1) * yUnit);
+            context.lineTo((c + 0.5) * xUnit, r * yUnit);
+            context.lineTo((c + 1) * xUnit, (r + 1) * yUnit);
+            //context.closePath();
+            context.stroke();
+            //line += " ^";
+            break;
+          case 1:
+            context.beginPath();
+            context.moveTo(c * xUnit, r * yUnit);
+            context.lineTo((c + 1) * xUnit, (r + 0.5) * yUnit);
+            context.lineTo(c * xUnit, (r + 1) * yUnit);
+            //context.closePath();
+            context.stroke();
+            //line += " >";
+            break;
+          case 2:
+            context.beginPath();
+            context.moveTo(c * xUnit, r * yUnit);
+            context.lineTo((c + 0.5) * xUnit, (r + 1) * yUnit);
+            context.lineTo((c + 1) * xUnit, r * yUnit);
+            //context.closePath();
+            context.stroke();
+            //line += " V";
+            break;
+          case 3:
+            context.beginPath();
+            context.moveTo((c + 1) * xUnit, r * yUnit);
+            context.lineTo(c * xUnit, (r + 0.5) * yUnit);
+            context.lineTo((c + 1) * xUnit, (r + 1) * yUnit);
+            //context.closePath();
+            context.stroke();
+            //line += " <";
+            break;
+          default:
+            break;
+        }
+      }
+    }
+  }
+
+  // Draw Goal
+  context.fillStyle = "yellow";
+  context.fillRect(goalState.col * xUnit, goalState.row * yUnit, xUnit, yUnit);
+
+  // Draw Player
+  context.fillStyle = "red";
+  context.fillRect(currentState.col * xUnit, currentState.row * yUnit, xUnit, yUnit);
+}
+
+// Maze Toggle on click
+canvas.addEventListener("mousedown", function(event) {
+  // Get Mouse Coordinates
+  let rect = canvas.getBoundingClientRect();
+  let mouseX = event.clientX - rect.left;
+  let mouseY = event.clientY - rect.top;
+  // Determine drawing dimensions
+  let rows = maze.length;
+  let columns = maze[0].length;
+  let xUnit = canvas.width / columns;
+  let yUnit = canvas.height / rows;
+  // Determine State
+  let clickX = Math.floor(mouseX / xUnit);
+  let clickY = Math.floor(mouseY / yUnit);
+  // Toggle if valid
+  if ((!((clickX == goalState.col) && (clickY == goalState.row))) && (!((clickX == currentState.col) && (clickY == currentState.row))) && (!((clickX == startColumn) && (clickY == startRow)))) {
+    maze[clickY][clickX] = (maze[clickY][clickX] + 1) % 2;
+  }
+  //console.log(clickX + " X   " + clickY + " Y");
+}, false);
+
+setInterval(pageLoop, 50);

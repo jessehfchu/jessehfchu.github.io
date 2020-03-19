@@ -13,46 +13,7 @@ body {
   font-weight: bold;
 }
 
-#divRoll {
-  text-align: center;
-}
-
-#btnRoll {
-  text-align: center;
-  background-color: grey;
-  border: none;
-  color: white;
-  padding: 15px 32px;
-  text-align: center;
-  display: inline-block;
-  font-size: 36px;
-}
-
-#btnRoll:disabled {
-  text-align: center;
-  background-color: grey;
-  border: none;
-  color: silver;
-  padding: 15px 32px;
-  text-align: center;
-  display: inline-block;
-  font-size: 36px;
-}
-
-#txtThemeName {
+#divMaze {
   width: 100%;
   text-align: center;
-  font-size: 48pt;
-}
-
-#txtThemeDescription {
-  width: 100%;
-  text-align: center;
-  font-size: 24pt;
-}
-
-#txtThemeList {
-  width: 100%;
-  text-align: center;
-  font-size: 16pt;
 }
