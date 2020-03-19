@@ -3,8 +3,8 @@ canvas = document.getElementById("canvasMaze");
 context = canvas.getContext("2d");
 
 /** Maze Structure **/
-mazeRows = 10;
-mazeColumns = 10;
+mazeRows = 5;
+mazeColumns = 5;
 maze = createMaze(mazeRows, mazeColumns);
 
 /** Value Matrix **/
