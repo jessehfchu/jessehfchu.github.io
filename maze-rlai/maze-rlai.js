@@ -359,7 +359,7 @@ function draw() {
 }
 
 // Maze Toggle on click
-canvas.addEventListener("mousedown", function(event) {
+canvas.addEventListener("click", function(event) {
   // Get Mouse Coordinates
   let rect = canvas.getBoundingClientRect();
   let mouseX = event.clientX - rect.left;
