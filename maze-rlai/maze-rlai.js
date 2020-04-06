@@ -18,7 +18,9 @@ currentState = createState(startRow, startColumn);
 
 /** Goal Position **/
 // Bottom Right
-goalState = createState(maze.length - 1, maze[0].length - 1);
+goalRow = maze.length - 1;
+goalColumn = maze[0].length - 1;
+goalState = createState(goalRow, goalColumn);
 
 /** Action Encoding **/
 // North = 0
@@ -376,7 +378,6 @@ canvas.addEventListener("click", function(event) {
   if ((!((clickX == goalState.col) && (clickY == goalState.row))) && (!((clickX == currentState.col) && (clickY == currentState.row))) && (!((clickX == startColumn) && (clickY == startRow)))) {
     maze[clickY][clickX] = (maze[clickY][clickX] + 1) % 2;
   }
-  //console.log(clickX + " X   " + clickY + " Y");
 }, false);
 
 learn(10);
