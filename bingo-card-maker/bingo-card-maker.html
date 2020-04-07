@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Bingo Card Generator</title>
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="bingo-card-maker.css" />
+    <!-- jQuery -->
+    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Extension Functions -->
+    <script defer src="../js/extension/array-shuffle.js"></script>
+    <!-- Script Code -->
+    <script defer src="bingo-card-maker.js"></script>
+  </head>
+    <body>
+      <header>
+        <!-- Header -->
+        <div id="txtHeader">Bingo Card Maker</div>
+        <br>
+      </header>
+      <main>
+        <!-- Maze -->
+        <div id="divCard">
+          <table id="tableCard">
+            <tr id="cardHeader">
+              <th id="headerB">B</th>
+              <th id="headerI">I</th>
+              <th id="headerN">N</th>
+              <th id="headerG">G</th>
+              <th id="headerO">O</th>
+            </tr>
+            <tr id="cardRow0">
+              <td id="b0">1</td>
+              <td id="i0">16</td>
+              <td id="n0">31</td>
+              <td id="g0">46</td>
+              <td id="o0">61</td>
+            </tr>
+            <tr id="cardRow1">
+              <td id="b1">2</td>
+              <td id="i1">17</td>
+              <td id="n1">32</td>
+              <td id="g1">47</td>
+              <td id="o1">62</td>
+            </tr>
+            <tr id="cardRow2">
+              <td id="b2">3</td>
+              <td id="i2">18</td>
+              <td id="n2">FREE</td>
+              <td id="g2">48</td>
+              <td id="o2">63</td>
+            </tr>
+            <tr id="cardRow3">
+              <td id="b3">4</td>
+              <td id="i3">19</td>
+              <td id="n3">34</td>
+              <td id="g3">49</td>
+              <td id="o3">64</td>
+            </tr>
+            <tr id="cardRow4">
+              <td id="b4">5</td>
+              <td id="i4">20</td>
+              <td id="n4">35</td>
+              <td id="g4">50</td>
+              <td id="o4">65</td>
+            </tr>
+          </table>
+          <br>
+          <!-- Button -->
+          <button type="button" id="btnCreate">Create Card</button>
+        </div>
+      </main>
+    </body>
+</html>
