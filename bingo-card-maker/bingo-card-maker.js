@@ -40,3 +40,6 @@ function createCard() {
   document.getElementById("o3").innerHTML = oNumbers[3];
   document.getElementById("o4").innerHTML = oNumbers[4];
 }
+
+// Initialize to random
+createCard();
