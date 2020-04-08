@@ -1,9 +1,19 @@
+#divCanvas {
+  width: 100%;
+  text-align: center;
+}
+
+header {
+  visibility: hidden;
+}
+
 body {
   background-color: black;
   font-family: monospace;
   color: white;
   padding: 0;
   margin: 0;
+  overflow-y: hidden;
 }
 
 #txtHeader {
@@ -14,6 +24,7 @@ body {
 }
 
 #divCard {
+  visibility: hidden;
   width: 100%;
   text-align: center;
 }
