@@ -64,10 +64,9 @@ class BingoCard {
 }
 
 function reset() {
-  cards = [
-    [new BingoCard(), new BingoCard(), new BingoCard(), new BingoCard()],
-    [new BingoCard(), new BingoCard(), new BingoCard(), new BingoCard()]
-  ];
+  for (let i = 0; i < 8; i++) {
+    cards.push(new BingoCard());
+  }
   draw();
 }
 
@@ -76,6 +75,16 @@ function draw() {
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
+  // Draw based on orientation
+  if (canvas.width > canvas.height) {
+    drawLandscape();
+  }
+  else {
+    drawPortrait();
+  }
+}
+
+function drawLandscape() {
   // White Background
   context.fillStyle = "white";
   context.globalAlpha = 1;
@@ -166,16 +175,14 @@ function draw() {
 
   // Numbers
   context.font = getNumberFont();
-  cards.forEach((cardRow, iCR) => {
-    cardRow.forEach((card, iC) => {
-      card.letters.forEach((letter, iL) => {
-        letter.forEach((number, iN) => {
-          context.fillText(
-            number.number,
-            (canvas.width * iC * 1 / 4) + (canvas.width * iL * 1 / 20) + (canvas.width * 1 / 40),
-            (canvas.height * iCR * 1 / 2) + (canvas.height * 1 / 20) + (canvas.height * iN * 9 / 100) + (canvas.height * 19 / 400)
-          );
-        });
+  cards.forEach((card, iC) => {
+    card.letters.forEach((letter, iL) => {
+      letter.forEach((number, iN) => {
+        context.fillText(
+          number.number,
+          (canvas.width * (iC % 4) * 1 / 4) + (canvas.width * iL * 1 / 20) + (canvas.width * 1 / 40),
+          (canvas.height * Math.floor(iC/4) * 1 / 2) + (canvas.height * 1 / 20) + (canvas.height * iN * 9 / 100) + (canvas.height * 19 / 400)
+        );
       });
     });
   });
@@ -183,34 +190,179 @@ function draw() {
   // Stamps
   context.fillStyle = "red";
   context.globalAlpha = 0.5;
-  cards.forEach((cardRow, iCR) => {
-    cardRow.forEach((card, iC) => {
-      card.letters.forEach((letter, iL) => {
-        letter.forEach((number, iN) => {
-          if (number.stamped) {
-            context.beginPath();
-            context.arc(
-              (canvas.width * iC * 1 / 4) + (canvas.width * iL * 1 / 20) + (canvas.width * 1 / 40),
-              (canvas.height * iCR * 1 / 2) + (canvas.height * 1 / 20) + (canvas.height * iN * 9 / 100) + (canvas.height * 9 / 200),
-              (canvas.height * 16 / 400),
-              0,
-              2 * Math.PI
-            );
-            context.fill();
-          }
-        });
+  cards.forEach((card, iC) => {
+    card.letters.forEach((letter, iL) => {
+      letter.forEach((number, iN) => {
+        if (number.stamped) {
+          context.beginPath();
+          context.arc(
+            (canvas.width * (iC % 4) * 1 / 4) + (canvas.width * iL * 1 / 20) + (canvas.width * 1 / 40),
+            (canvas.height * Math.floor(iC/4) * 1 / 2) + (canvas.height * 1 / 20) + (canvas.height * iN * 9 / 100) + (canvas.height * 9 / 200),
+            (canvas.width * 1 / 50),
+            0,
+            2 * Math.PI
+          );
+          context.fill();
+        }
+      });
+    });
+  });
+}
+
+function drawPortrait() {
+  // White Background
+  context.fillStyle = "white";
+  context.globalAlpha = 1;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  // Card Backgrounds
+  context.fillStyle = "lightgrey";
+  context.fillRect(canvas.width * 1 / 2, canvas.height * 0 / 4, canvas.width * 1 / 2, canvas.height * 1 / 4);
+  context.fillRect(canvas.width * 0 / 2, canvas.height * 1 / 4, canvas.width * 1 / 2, canvas.height * 1 / 4);
+  context.fillRect(canvas.width * 1 / 2, canvas.height * 2 / 4, canvas.width * 1 / 2, canvas.height * 1 / 4);
+  context.fillRect(canvas.width * 0 / 2, canvas.height * 3 / 4, canvas.width * 1 / 2, canvas.height * 1 / 4);
+
+  // Sheet Lines
+  context.strokeStyle = "black";
+  context.lineWidth = 5;
+  // Horizontal Sheet Lines
+  for (let i = 0; i <= 4; i++) {
+    context.beginPath();
+    context.moveTo(canvas.width * 0 / 4, canvas.height * i / 4);
+    context.lineTo(canvas.width * 4 / 4, canvas.height * i / 4);
+    context.stroke();
+  }
+  // Vertical Sheet Lines
+  for (let i = 0; i <= 2; i++) {
+    context.beginPath();
+    context.moveTo(canvas.width * i / 2, canvas.height * 0 / 2);
+    context.lineTo(canvas.width * i / 2, canvas.height * 2 / 2);
+    context.stroke();
+  }
+
+  // Header Grid Lines
+  context.strokeStyle = "black";
+  context.lineWidth = 3;
+  for (let i = 0; i <= 4; i++) {
+    context.beginPath();
+    context.moveTo(canvas.width * 0 / 4, canvas.height * ((i * 10) + 1) / 40);
+    context.lineTo(canvas.width * 4 / 4, canvas.height * ((i * 10) + 1) / 40);
+    context.stroke();
+  }
+
+  // Number Lines
+  context.strokeStyle = "black";
+  context.lineWidth = 1;
+  // Horizontal Lines
+  for (let i = 0; i <= 4; i++) {
+    context.beginPath();
+    context.moveTo(canvas.width * 0 / 4, (canvas.height * 1 / 40) + (canvas.height * i * 9 / 200));
+    context.lineTo(canvas.width * 4 / 4, (canvas.height * 1 / 40) + (canvas.height * i * 9 / 200));
+    context.stroke();
+    context.beginPath();
+    context.moveTo(canvas.width * 0 / 4, (canvas.height * 11 / 40) + (canvas.height * i * 9 / 200));
+    context.lineTo(canvas.width * 4 / 4, (canvas.height * 11 / 40) + (canvas.height * i * 9 / 200));
+    context.stroke();
+    context.beginPath();
+    context.moveTo(canvas.width * 0 / 4, (canvas.height * 21 / 40) + (canvas.height * i * 9 / 200));
+    context.lineTo(canvas.width * 4 / 4, (canvas.height * 21 / 40) + (canvas.height * i * 9 / 200));
+    context.stroke();
+    context.beginPath();
+    context.moveTo(canvas.width * 0 / 4, (canvas.height * 31 / 40) + (canvas.height * i * 9 / 200));
+    context.lineTo(canvas.width * 4 / 4, (canvas.height * 31 / 40) + (canvas.height * i * 9 / 200));
+    context.stroke();
+  }
+  // Vertical Lines
+  for (let i = 0; i <= 10; i++) {
+    context.beginPath();
+    context.moveTo(canvas.width * i / 10, (canvas.height * 0 / 20));
+    context.lineTo(canvas.width * i / 10, (canvas.height * 20 / 20));
+    context.stroke();
+  }
+
+  // Headers
+  context.font = getHeaderFont();
+  context.textAlign = "center";
+  context.textBaseline = "middle";
+  context.fillStyle = "black";
+  for (let i = 0; i <= 10; i++) {
+    let char = "";
+    if ((i % 5) == 0) {
+      char = "B";
+    }
+    else if ((i % 5) == 1) {
+      char = "I";
+    }
+    else if ((i % 5) == 2) {
+      char = "N";
+    }
+    else if ((i % 5) == 3) {
+      char = "G";
+    }
+    else if ((i % 5) == 4) {
+      char = "O";
+    }
+    context.fillText(char, (canvas.width * i / 10) + (canvas.width * 1 / 20), (canvas.height * 1 / 40) - (canvas.height * 1 / 90));
+    context.fillText(char, (canvas.width * i / 10) + (canvas.width * 1 / 20), (canvas.height * 11 / 40) - (canvas.height * 1 / 90));
+    context.fillText(char, (canvas.width * i / 10) + (canvas.width * 1 / 20), (canvas.height * 21 / 40) - (canvas.height * 1 / 90));
+    context.fillText(char, (canvas.width * i / 10) + (canvas.width * 1 / 20), (canvas.height * 31 / 40) - (canvas.height * 1 / 90));
+  }
+
+  // Numbers
+  context.font = getNumberFont();
+  cards.forEach((card, iC) => {
+    card.letters.forEach((letter, iL) => {
+      letter.forEach((number, iN) => {
+        context.fillText(
+          number.number,
+          (canvas.width * (iC % 2) * 1 / 2) + (canvas.width * iL * 1 / 10) + (canvas.width * 1 / 20),
+          (canvas.height * Math.floor(iC/2) * 1 / 4) + (canvas.height * 1 / 40) + (canvas.height * iN * 9 / 200) + (canvas.height * 19 / 800)
+        );
+      });
+    });
+  });
+
+  // Stamps
+  context.fillStyle = "red";
+  context.globalAlpha = 0.5;
+  cards.forEach((card, iC) => {
+    card.letters.forEach((letter, iL) => {
+      letter.forEach((number, iN) => {
+        if (!number.stamped) {
+          context.beginPath();
+          context.arc(
+            (canvas.width * (iC % 2) * 1 / 2) + (canvas.width * iL * 1 / 10) + (canvas.width * 1 / 20),
+            (canvas.height * Math.floor(iC/2) * 1 / 4) + (canvas.height * 1 / 40) + (canvas.height * iN * 9 / 200) + (canvas.height * 19 / 800),
+            (canvas.height * 1 / 60),
+            0,
+            2 * Math.PI
+          );
+          context.fill();
+        }
       });
     });
   });
 }
 
 function getHeaderFont() {
-  let scale = Math.floor(Math.min(32, canvas.width / 50));
+  let scale = "";
+  if (canvas.width > canvas.height) {
+    scale = Math.floor(Math.min(32, canvas.width / 50));
+  }
+  else {
+    scale = Math.floor(Math.min(32, canvas.width / 35));
+  }
   return "bold " + scale + "pt monospace"
 }
 
 function getNumberFont() {
-  let scale = Math.floor(Math.min(24, canvas.width / 65));
+  let scale = "";
+  if (canvas.width > canvas.height) {
+    scale = Math.floor(Math.min(24, canvas.width / 65));
+  }
+  else {
+    scale = Math.floor(Math.min(64, canvas.width / 30));
+  }
   return "bold " + scale + "pt monospace"
 }
 
@@ -223,17 +375,32 @@ canvas.addEventListener("click", function(event) {
   let rect = canvas.getBoundingClientRect();
   let mouseX = event.clientX - rect.left;
   let mouseY = event.clientY - rect.top;
-  // Determine card index
-  let iCR = Math.floor(mouseY / (canvas.height * 1 / 2));
-  console.log("Row: " + iCR);
-  let iC = Math.floor(mouseX / (canvas.width * 1 / 4));
-  console.log("Card: " + iC);
-  let iL = Math.floor((mouseX % (canvas.width * 1 / 4)) / (canvas.width * 1 / 20));
-  console.log("Letter: " + iL);
-  let iN = Math.floor((mouseY % (canvas.height * 1 / 2) - (canvas.height * 1 / 20)) / (canvas.height * 9 / 100));
-  console.log("Number: " + iN);
-  // Toggle stamp
-  cards[iCR][iC].letters[iL][iN].stamped = !cards[iCR][iC].letters[iL][iN].stamped;
+  if (canvas.width > canvas.height) {
+    // Determine card index
+    let iCR = Math.floor(mouseY / (canvas.height * 1 / 2));
+    console.log("Row: " + iCR);
+    let iC = Math.floor(mouseX / (canvas.width * 1 / 4));
+    console.log("Card: " + iC);
+    let iL = Math.floor((mouseX % (canvas.width * 1 / 4)) / (canvas.width * 1 / 20));
+    console.log("Letter: " + iL);
+    let iN = Math.floor((mouseY % (canvas.height * 1 / 2) - (canvas.height * 1 / 20)) / (canvas.height * 9 / 100));
+    console.log("Number: " + iN);
+    // Toggle stamp
+    cards[(4 * iCR) + iC].letters[iL][iN].stamped = !cards[(4 * iCR) + iC].letters[iL][iN].stamped;
+  }
+  else {
+    // Determine card index
+    let iCR = Math.floor(mouseY / (canvas.height * 1 / 4));
+    console.log("Row: " + iCR);
+    let iC = Math.floor(mouseX / (canvas.width * 1 / 2));
+    console.log("Card: " + iC);
+    let iL = Math.floor((mouseX % (canvas.width * 1 / 2)) / (canvas.width * 1 / 10));
+    console.log("Letter: " + iL);
+    let iN = Math.floor((mouseY % (canvas.height * 1 / 4) - (canvas.height * 1 / 40)) / (canvas.height * 9 / 200));
+    console.log("Number: " + iN);
+    // Toggle stamp
+    cards[(2 * iCR) + iC].letters[iL][iN].stamped = !cards[(2 * iCR) + iC].letters[iL][iN].stamped;
+  }
   draw();
 }, false);
 
