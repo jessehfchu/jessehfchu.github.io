@@ -1,411 +1,329 @@
 /** Reference to canvas element **/
-canvas = document.getElementById("canvasCards");
-context = canvas.getContext("2d");
+cCards = document.getElementById("canvasCards");
+conCards = cCards.getContext("2d");
+cHeader = document.getElementById("canvasHeader");
+conHeader = cHeader.getContext("2d");
 
-// Column Numbers
-bNumbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
-iNumbers = [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30];
-nNumbers = [31,32,33,34,35,36,37,38,39,40,41,42,43,44,45];
-gNumbers = [46,47,48,49,50,51,52,53,54,55,56,57,58,59,60];
-oNumbers = [61,62,63,64,65,66,67,68,69,70,71,72,73,74,75];
+/** Column Numbers **/
+numbers = [
+  [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
+  [16,17,18,19,20,21,22,23,24,25,26,27,28,29,30],
+  [31,32,33,34,35,36,37,38,39,40,41,42,43,44,45],
+  [46,47,48,49,50,51,52,53,54,55,56,57,58,59,60],
+  [61,62,63,64,65,66,67,68,69,70,71,72,73,74,75]
+];
 
-// Bingo Cards
+// Bingo Cards Array
 cards = [];
+
+// Stamp color
+stampColors = ["red", "orange", "gold", "green", "blue", "purple"];
+cStamp = "red";
 
 // Bingo Card Class
 class BingoCard {
+  // Randomize on instantiation
   constructor() {
     this.reroll();
   }
 
+  // Randomize Bingo Card
   reroll() {
     this.letters = [];
-    bNumbers.shuffle();
-    this.letters.push([
-      {"element" : "b0", "number" : bNumbers[0], "stamped" : false},
-      {"element" : "b1", "number" : bNumbers[1], "stamped" : false},
-      {"element" : "b2", "number" : bNumbers[2], "stamped" : false},
-      {"element" : "b3", "number" : bNumbers[3], "stamped" : false},
-      {"element" : "b4", "number" : bNumbers[4], "stamped" : false}
-    ]);
-    iNumbers.shuffle();
-    this.letters.push([
-      {"element" : "i0", "number" : iNumbers[0], "stamped" : false},
-      {"element" : "i1", "number" : iNumbers[1], "stamped" : false},
-      {"element" : "i2", "number" : iNumbers[2], "stamped" : false},
-      {"element" : "i3", "number" : iNumbers[3], "stamped" : false},
-      {"element" : "i4", "number" : iNumbers[4], "stamped" : false}
-    ]);
-    nNumbers.shuffle();
-    this.letters.push([
-      {"element" : "n0", "number" : nNumbers[0], "stamped" : false},
-      {"element" : "n1", "number" : nNumbers[1], "stamped" : false},
-      {"element" : "n2", "number" : "FREE", "stamped" : false},
-      {"element" : "n3", "number" : nNumbers[3], "stamped" : false},
-      {"element" : "n4", "number" : nNumbers[4], "stamped" : false}
-    ]);
-    gNumbers.shuffle();
-    this.letters.push([
-      {"element" : "g0", "number" : gNumbers[0], "stamped" : false},
-      {"element" : "g1", "number" : gNumbers[1], "stamped" : false},
-      {"element" : "g2", "number" : gNumbers[2], "stamped" : false},
-      {"element" : "g3", "number" : gNumbers[3], "stamped" : false},
-      {"element" : "g4", "number" : gNumbers[4], "stamped" : false}
-    ]);
-    oNumbers.shuffle();
-    this.letters.push([
-      {"element" : "o0", "number" : oNumbers[0], "stamped" : false},
-      {"element" : "o1", "number" : oNumbers[1], "stamped" : false},
-      {"element" : "o2", "number" : oNumbers[2], "stamped" : false},
-      {"element" : "o3", "number" : oNumbers[3], "stamped" : false},
-      {"element" : "o4", "number" : oNumbers[4], "stamped" : false}
-    ]);
+    numbers.forEach((l, i) => {
+      l.shuffle();
+      let numbers = [];
+      for (let i = 0; i < 5; i++) {
+        numbers.push({"number" : l[i], "stamped" : false});
+      }
+      this.letters.push(numbers);
+    });
+    this.letters[2][2].number = "FREE";
   }
 }
 
+// Reroll all cards
 function reset() {
+  cards = [];
   for (let i = 0; i < 8; i++) {
     cards.push(new BingoCard());
   }
   draw();
 }
 
+// Draw the screen
 function draw() {
-  // Size
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+  // Set canvas sizes
+  cHeader.width = window.innerWidth;
+  cHeader.height = window.innerHeight * 0.035;
+  cCards.width = window.innerWidth;
+  cCards.height = window.innerHeight - cHeader.height;
 
-  // Draw based on orientation
-  if (canvas.width > canvas.height) {
-    drawLandscape();
-  }
-  else {
-    drawPortrait();
-  }
+  // Draw Header
+  drawHeader();
+
+  // Draw cards
+  cards.forEach((card, i) => {
+    drawCard(card, i);
+  });
 }
 
-function drawLandscape() {
-  // White Background
-  context.fillStyle = "white";
-  context.globalAlpha = 1;
-  context.fillRect(0, 0, canvas.width, canvas.height);
+function drawHeader() {
+  let w = cHeader.width;
+  let h = cHeader.height;
+  // Header background
+  conHeader.fillStyle = "black";
+  conHeader.fillRect(0, 0, cHeader.width, h);
 
-  // Card Backgrounds
-  context.fillStyle = "lightgrey";
-  context.fillRect(canvas.width * 1 / 4, canvas.height * 0 / 2, canvas.width * 1 / 4, canvas.height * 1 / 2);
-  context.fillRect(canvas.width * 3 / 4, canvas.height * 0 / 2, canvas.width * 1 / 4, canvas.height * 1 / 2);
-  context.fillRect(canvas.width * 0 / 4, canvas.height * 1 / 2, canvas.width * 1 / 4, canvas.height * 1 / 2);
-  context.fillRect(canvas.width * 2 / 4, canvas.height * 1 / 2, canvas.width * 1 / 4, canvas.height * 1 / 2);
+  // Title
+  conHeader.font = "bold 16pt monospace";
+  conHeader.textAlign = "left";
+  conHeader.textBaseline = "middle";
+  conHeader.fillStyle = "white";
+  conHeader.fillText("Bingo", h / 4, h / 2);
 
-  // Sheet Lines
-  context.strokeStyle = "black";
-  context.lineWidth = 5;
-  // Horizontal Sheet Lines
-  for (let i = 0; i <= 2; i++) {
-    context.beginPath();
-    context.moveTo(canvas.width * 0 / 4, canvas.height * i / 2);
-    context.lineTo(canvas.width * 4 / 4, canvas.height * i / 2);
-    context.stroke();
-  }
-  // Vertical Sheet Lines
-  for (let i = 0; i <= 4; i++) {
-    context.beginPath();
-    context.moveTo(canvas.width * i / 4, canvas.height * 0 / 2);
-    context.lineTo(canvas.width * i / 4, canvas.height * 2 / 2);
-    context.stroke();
+  // Stamp colors
+  for (let i = 0; i < stampColors.length; i++) {
+    conHeader.fillStyle = stampColors[i];
+    conHeader.globalAlpha = stampColors[i] == cStamp ? 1 : 0.4;
+    conHeader.fillRect(w - (stampColors.length * h) + (i * h), 0, h, h);
+    conHeader.globalAlpha = 1;
+    conHeader.strokeStyle = "black";
+    conHeader.lineWidth = 3;
+    conHeader.beginPath();
+    conHeader.rect(w - (stampColors.length * h) + (i * h), 0, h, h);
+    conHeader.stroke();
   }
 
-  // Header Grid Lines
-  context.strokeStyle = "black";
-  context.lineWidth = 3;
-  for (let i = 0; i <= 1; i++) {
-    context.beginPath();
-    context.moveTo(canvas.width * 0 / 4, canvas.height * ((i * 10) + 1) / 20);
-    context.lineTo(canvas.width * 4 / 4, canvas.height * ((i * 10) + 1) / 20);
-    context.stroke();
-  }
+  // Refresh Button
+  conHeader.fillStyle = "grey";
+  conHeader.fillRect((w / 2) - 60, 0, 120, h);
+  conHeader.strokeStyle = "darkgrey";
+  conHeader.lineWidth = 3;
+  conHeader.beginPath();
+  conHeader.rect((w / 2) - 60, 0, 120, h);
+  conHeader.stroke();
+
+  // Refresh Text
+  conHeader.font = "bold 10pt monospace";
+  conHeader.textAlign = "center";
+  conHeader.textBaseline = "middle";
+  conHeader.fillStyle = "white";
+  conHeader.fillText("Double-Click", w / 2, h / 4);
+  conHeader.fillText("For New Cards", w / 2, h * 3 / 4);
+}
+
+// Determine how many rows of cards to display
+function rows() {
+  return cCards.width > cCards.height ? 2 : 4;
+}
+
+// Determine how many columns of cards to display
+function columns() {
+  return cCards.width > cCards.height ? 4 : 2;
+}
+
+function drawCard(card, index) {
+  // Determine row and column position
+  let r = Math.floor(index / columns());
+  let c = index % columns();
+
+  // Determine starting coordinates
+  let x = cCards.width * c / columns();
+  let y = cCards.height * r / rows();
+
+  // Determine full card dimensions
+  let w = cCards.width / columns();
+  let h = cCards.height / rows();
+
+  // Card Background
+  conCards.globalAlpha = 1;
+  conCards.fillStyle = card.letters[2][2].stamped ? (r + c) % 2 == 1 ? "powderblue" : "white" : "grey";
+  conCards.fillRect(x, y, w, h);
+
+  // Border
+  conCards.strokeStyle = "black";
+  conCards.lineWidth = 5;
+  conCards.beginPath();
+  conCards.moveTo(x, y);
+  conCards.lineTo(x + w, y);
+  conCards.lineTo(x + w, y + h);
+  conCards.lineTo(x, y + h);
+  conCards.lineTo(x, y);
+  conCards.stroke();
+
+  // Header Grid Line
+  conCards.strokeStyle = "black";
+  conCards.lineWidth = 3;
+  conCards.beginPath();
+  conCards.moveTo(x, y + (h / 10));
+  conCards.moveTo(x + w, y + (h/ 10));
+  conCards.stroke();
 
   // Number Lines
-  context.strokeStyle = "black";
-  context.lineWidth = 1;
-  // Horizontal Lines
-  for (let i = 0; i <= 4; i++) {
-    context.beginPath();
-    context.moveTo(canvas.width * 0 / 4, (canvas.height * 1 / 20) + (canvas.height * i * 9 / 100));
-    context.lineTo(canvas.width * 4 / 4, (canvas.height * 1 / 20) + (canvas.height * i * 9 / 100));
-    context.stroke();
-    context.beginPath();
-    context.moveTo(canvas.width * 0 / 4, (canvas.height * 11 / 20) + (canvas.height * i * 9 / 100));
-    context.lineTo(canvas.width * 4 / 4, (canvas.height * 11 / 20) + (canvas.height * i * 9 / 100));
-    context.stroke();
-  }
+  conCards.strokeStyle = "black";
+  conCards.lineWidth = 1;
   // Vertical Lines
-  for (let i = 0; i <= 20; i++) {
-    context.beginPath();
-    context.moveTo(canvas.width * i / 20, (canvas.height * 0 / 20));
-    context.lineTo(canvas.width * i / 20, (canvas.height * 20 / 20));
-    context.stroke();
+  for (let i = 0; i <= w; i += w / 5) {
+    conCards.beginPath();
+    conCards.moveTo(x + i, y);
+    conCards.lineTo(x + i, y + h);
+    conCards.stroke();
+  }
+  // Horizontal Lines
+  for (let i = h / 10; i <= h; i += h * 9 / 50) {
+    conCards.beginPath();
+    conCards.moveTo(x, y + i);
+    conCards.lineTo(x + w, y + i);
+    conCards.stroke();
   }
 
-  // Headers
-  context.font = getHeaderFont();
-  context.textAlign = "center";
-  context.textBaseline = "middle";
-  context.fillStyle = "black";
-  for (let i = 0; i <= 20; i++) {
-    let char = "";
-    if ((i % 5) == 0) {
-      char = "B";
-    }
-    else if ((i % 5) == 1) {
-      char = "I";
-    }
-    else if ((i % 5) == 2) {
-      char = "N";
-    }
-    else if ((i % 5) == 3) {
-      char = "G";
-    }
-    else if ((i % 5) == 4) {
-      char = "O";
-    }
-    context.fillText(char, (canvas.width * i / 20) + (canvas.width * 1 / 40), (canvas.height * 1 / 20) - (canvas.height * 1 / 45));
-    context.fillText(char, (canvas.width * i / 20) + (canvas.width * 1 / 40), (canvas.height * 11 / 20) - (canvas.height * 1 / 45));
+  // Text settings
+  let colors = ["mediumblue", "firebrick", "black", "darkgreen", "gold"];
+  let charHeader = ["B", "I", "N", "G", "O"];
+
+  // Header Letters
+  conCards.font = getHeaderFont();
+  conCards.textAlign = "center";
+  conCards.textBaseline = "middle";
+  conCards.strokeStyle = "black";
+  conCards.lineWidth = 1;
+  for (let i = 0; i < 5; i++) {
+    conCards.fillStyle = card.letters[2][2].stamped ? colors[i] : "black";
+    conCards.fillText(charHeader[i], x + (w / 10) + (i * w / 5), y + (h / 18));
+    conCards.strokeText(charHeader[i], x + (w / 10) + (i * w / 5), y + (h / 18));
   }
 
   // Numbers
-  context.font = getNumberFont();
-  cards.forEach((card, iC) => {
-    card.letters.forEach((letter, iL) => {
-      letter.forEach((number, iN) => {
-        context.fillText(
-          number.number,
-          (canvas.width * (iC % 4) * 1 / 4) + (canvas.width * iL * 1 / 20) + (canvas.width * 1 / 40),
-          (canvas.height * Math.floor(iC/4) * 1 / 2) + (canvas.height * 1 / 20) + (canvas.height * iN * 9 / 100) + (canvas.height * 19 / 400)
-        );
-      });
+  conCards.textAlign = "center";
+  conCards.textBaseline = "middle";
+  conCards.strokeStyle = "black";
+  conCards.lineWidth = 1;
+  card.letters.forEach((letter, iL) => {
+    letter.forEach((number, iN) => {
+      conCards.font = number.number == "FREE" ? getFreeFont() : getNumberFont();
+      conCards.fillStyle = card.letters[2][2].stamped ? colors[iL] : "black";
+      conCards.fillText(number.number, x + (w / 10) + (iL * w / 5), y + (h * 19 / 100) + (iN * h * 9 / 50));
+      conCards.strokeText(number.number, x + (w / 10) + (iL * w / 5), y + (h * 19 / 100) + (iN * h * 9 / 50));
     });
   });
 
   // Stamps
-  context.fillStyle = "red";
-  context.globalAlpha = 0.5;
-  cards.forEach((card, iC) => {
-    card.letters.forEach((letter, iL) => {
-      letter.forEach((number, iN) => {
-        if (number.stamped) {
-          context.beginPath();
-          context.arc(
-            (canvas.width * (iC % 4) * 1 / 4) + (canvas.width * iL * 1 / 20) + (canvas.width * 1 / 40),
-            (canvas.height * Math.floor(iC/4) * 1 / 2) + (canvas.height * 1 / 20) + (canvas.height * iN * 9 / 100) + (canvas.height * 9 / 200),
-            (canvas.width * 1 / 50),
-            0,
-            2 * Math.PI
-          );
-          context.fill();
-        }
-      });
-    });
-  });
-}
-
-function drawPortrait() {
-  // White Background
-  context.fillStyle = "white";
-  context.globalAlpha = 1;
-  context.fillRect(0, 0, canvas.width, canvas.height);
-
-  // Card Backgrounds
-  context.fillStyle = "lightgrey";
-  context.fillRect(canvas.width * 1 / 2, canvas.height * 0 / 4, canvas.width * 1 / 2, canvas.height * 1 / 4);
-  context.fillRect(canvas.width * 0 / 2, canvas.height * 1 / 4, canvas.width * 1 / 2, canvas.height * 1 / 4);
-  context.fillRect(canvas.width * 1 / 2, canvas.height * 2 / 4, canvas.width * 1 / 2, canvas.height * 1 / 4);
-  context.fillRect(canvas.width * 0 / 2, canvas.height * 3 / 4, canvas.width * 1 / 2, canvas.height * 1 / 4);
-
-  // Sheet Lines
-  context.strokeStyle = "black";
-  context.lineWidth = 5;
-  // Horizontal Sheet Lines
-  for (let i = 0; i <= 4; i++) {
-    context.beginPath();
-    context.moveTo(canvas.width * 0 / 4, canvas.height * i / 4);
-    context.lineTo(canvas.width * 4 / 4, canvas.height * i / 4);
-    context.stroke();
-  }
-  // Vertical Sheet Lines
-  for (let i = 0; i <= 2; i++) {
-    context.beginPath();
-    context.moveTo(canvas.width * i / 2, canvas.height * 0 / 2);
-    context.lineTo(canvas.width * i / 2, canvas.height * 2 / 2);
-    context.stroke();
-  }
-
-  // Header Grid Lines
-  context.strokeStyle = "black";
-  context.lineWidth = 3;
-  for (let i = 0; i <= 4; i++) {
-    context.beginPath();
-    context.moveTo(canvas.width * 0 / 4, canvas.height * ((i * 10) + 1) / 40);
-    context.lineTo(canvas.width * 4 / 4, canvas.height * ((i * 10) + 1) / 40);
-    context.stroke();
-  }
-
-  // Number Lines
-  context.strokeStyle = "black";
-  context.lineWidth = 1;
-  // Horizontal Lines
-  for (let i = 0; i <= 4; i++) {
-    context.beginPath();
-    context.moveTo(canvas.width * 0 / 4, (canvas.height * 1 / 40) + (canvas.height * i * 9 / 200));
-    context.lineTo(canvas.width * 4 / 4, (canvas.height * 1 / 40) + (canvas.height * i * 9 / 200));
-    context.stroke();
-    context.beginPath();
-    context.moveTo(canvas.width * 0 / 4, (canvas.height * 11 / 40) + (canvas.height * i * 9 / 200));
-    context.lineTo(canvas.width * 4 / 4, (canvas.height * 11 / 40) + (canvas.height * i * 9 / 200));
-    context.stroke();
-    context.beginPath();
-    context.moveTo(canvas.width * 0 / 4, (canvas.height * 21 / 40) + (canvas.height * i * 9 / 200));
-    context.lineTo(canvas.width * 4 / 4, (canvas.height * 21 / 40) + (canvas.height * i * 9 / 200));
-    context.stroke();
-    context.beginPath();
-    context.moveTo(canvas.width * 0 / 4, (canvas.height * 31 / 40) + (canvas.height * i * 9 / 200));
-    context.lineTo(canvas.width * 4 / 4, (canvas.height * 31 / 40) + (canvas.height * i * 9 / 200));
-    context.stroke();
-  }
-  // Vertical Lines
-  for (let i = 0; i <= 10; i++) {
-    context.beginPath();
-    context.moveTo(canvas.width * i / 10, (canvas.height * 0 / 20));
-    context.lineTo(canvas.width * i / 10, (canvas.height * 20 / 20));
-    context.stroke();
-  }
-
-  // Headers
-  context.font = getHeaderFont();
-  context.textAlign = "center";
-  context.textBaseline = "middle";
-  context.fillStyle = "black";
-  for (let i = 0; i <= 10; i++) {
-    let char = "";
-    if ((i % 5) == 0) {
-      char = "B";
-    }
-    else if ((i % 5) == 1) {
-      char = "I";
-    }
-    else if ((i % 5) == 2) {
-      char = "N";
-    }
-    else if ((i % 5) == 3) {
-      char = "G";
-    }
-    else if ((i % 5) == 4) {
-      char = "O";
-    }
-    context.fillText(char, (canvas.width * i / 10) + (canvas.width * 1 / 20), (canvas.height * 1 / 40) - (canvas.height * 1 / 90));
-    context.fillText(char, (canvas.width * i / 10) + (canvas.width * 1 / 20), (canvas.height * 11 / 40) - (canvas.height * 1 / 90));
-    context.fillText(char, (canvas.width * i / 10) + (canvas.width * 1 / 20), (canvas.height * 21 / 40) - (canvas.height * 1 / 90));
-    context.fillText(char, (canvas.width * i / 10) + (canvas.width * 1 / 20), (canvas.height * 31 / 40) - (canvas.height * 1 / 90));
-  }
-
-  // Numbers
-  context.font = getNumberFont();
-  cards.forEach((card, iC) => {
-    card.letters.forEach((letter, iL) => {
-      letter.forEach((number, iN) => {
-        context.fillText(
-          number.number,
-          (canvas.width * (iC % 2) * 1 / 2) + (canvas.width * iL * 1 / 10) + (canvas.width * 1 / 20),
-          (canvas.height * Math.floor(iC/2) * 1 / 4) + (canvas.height * 1 / 40) + (canvas.height * iN * 9 / 200) + (canvas.height * 19 / 800)
+  conCards.fillStyle = cStamp;
+  conCards.globalAlpha = 0.5;
+  card.letters.forEach((letter, iL) => {
+    letter.forEach((number, iN) => {
+      if (number.stamped) {
+        conCards.beginPath();
+        conCards.arc(
+          x + (w / 10) + (iL * w / 5),
+          y + (h * 19 / 100) + (iN * h * 9 / 50),
+          Math.min(w * 9 / 100, h * 81 / 1000),
+          0,
+          2 * Math.PI
         );
-      });
-    });
-  });
-
-  // Stamps
-  context.fillStyle = "red";
-  context.globalAlpha = 0.5;
-  cards.forEach((card, iC) => {
-    card.letters.forEach((letter, iL) => {
-      letter.forEach((number, iN) => {
-        if (number.stamped) {
-          context.beginPath();
-          context.arc(
-            (canvas.width * (iC % 2) * 1 / 2) + (canvas.width * iL * 1 / 10) + (canvas.width * 1 / 20),
-            (canvas.height * Math.floor(iC/2) * 1 / 4) + (canvas.height * 1 / 40) + (canvas.height * iN * 9 / 200) + (canvas.height * 19 / 800),
-            (canvas.height * 1 / 60),
-            0,
-            2 * Math.PI
-          );
-          context.fill();
-        }
-      });
+        conCards.fill();
+      }
     });
   });
 }
 
 function getHeaderFont() {
   let scale = "";
-  if (canvas.width > canvas.height) {
-    scale = Math.floor(Math.min(32, canvas.width / 50));
+  if (cCards.width > cCards.height) {
+    scale = Math.floor(Math.min(32, cCards.width / 50));
   }
   else {
-    scale = Math.floor(Math.min(32, canvas.width / 35));
+    scale = Math.floor(Math.min(32, cCards.width / 35));
   }
-  return "bold " + scale + "pt monospace"
+  return "bold " + scale + "pt monospace";
 }
 
 function getNumberFont() {
   let scale = "";
-  if (canvas.width > canvas.height) {
-    scale = Math.floor(Math.min(24, canvas.width / 65));
+  if (cCards.width > cCards.height) {
+    scale = Math.floor(Math.min(24, cCards.width / 65));
   }
   else {
-    scale = Math.floor(Math.min(64, canvas.width / 30));
+    scale = Math.floor(Math.min(64, cCards.width / 30));
   }
-  return "bold " + scale + "pt monospace"
+  return "bold " + scale + "pt monospace";
+}
+
+function getFreeFont() {
+  let scale = "";
+  if (cCards.width > cCards.height) {
+    scale = Math.floor(Math.min(18, cCards.width / 100));
+  }
+  else {
+    scale = Math.floor(Math.min(36, cCards.width / 35));
+  }
+  return "bold " + scale + "pt monospace";
 }
 
 // Bind Event Handlers
 window.addEventListener("resize", draw);
 
 // Stamp toggle on click
-canvas.addEventListener("click", function(event) {
+cCards.addEventListener("click", function(event) {
   // Get Mouse Coordinates
-  let rect = canvas.getBoundingClientRect();
+  let rect = cCards.getBoundingClientRect();
   let mouseX = event.clientX - rect.left;
   let mouseY = event.clientY - rect.top;
-  if (canvas.width > canvas.height) {
-    // Determine card index
-    let iCR = Math.floor(mouseY / (canvas.height * 1 / 2));
-    console.log("Row: " + iCR);
-    let iC = Math.floor(mouseX / (canvas.width * 1 / 4));
-    console.log("Card: " + iC);
-    let iL = Math.floor((mouseX % (canvas.width * 1 / 4)) / (canvas.width * 1 / 20));
-    console.log("Letter: " + iL);
-    let iN = Math.floor((mouseY % (canvas.height * 1 / 2) - (canvas.height * 1 / 20)) / (canvas.height * 9 / 100));
-    console.log("Number: " + iN);
-    // Toggle stamp
-    cards[(4 * iCR) + iC].letters[iL][iN].stamped = !cards[(4 * iCR) + iC].letters[iL][iN].stamped;
-  }
-  else {
-    // Determine card index
-    let iCR = Math.floor(mouseY / (canvas.height * 1 / 4));
-    console.log("Row: " + iCR);
-    let iC = Math.floor(mouseX / (canvas.width * 1 / 2));
-    console.log("Card: " + iC);
-    let iL = Math.floor((mouseX % (canvas.width * 1 / 2)) / (canvas.width * 1 / 10));
-    console.log("Letter: " + iL);
-    let iN = Math.floor((mouseY % (canvas.height * 1 / 4) - (canvas.height * 1 / 40)) / (canvas.height * 9 / 200));
-    console.log("Number: " + iN);
-    // Toggle stamp
-    cards[(2 * iCR) + iC].letters[iL][iN].stamped = !cards[(2 * iCR) + iC].letters[iL][iN].stamped;
+
+  // Determine full card dimensions
+  let w = cCards.width / columns();
+  let h = cCards.height / rows();
+
+  // Determine card index
+  let iCR = Math.floor(mouseY / h);
+  let iC = Math.floor(mouseX / w);
+  let iL = Math.floor((mouseX % w) / (w / 5));
+  let iN = Math.floor(((mouseY % h) - (h / 10)) / (h * 9 / 50));
+  // Toggle stamp
+  if (iN >= 0) {
+    cards[(columns() * iCR) + iC].letters[iL][iN].stamped ^= true;
   }
   draw();
 }, false);
 
-reset();
+// Change stamp color
+cHeader.addEventListener("click", function(event) {
+  // Get Mouse Coordinates
+  let rect = cHeader.getBoundingClientRect();
+  let mouseX = event.clientX - rect.left;
+  let mouseY = event.clientY - rect.top;
 
+  // Determine color index
+  let w = cHeader.width;
+  let h = cHeader.height;
+  let iColor = Math.floor((mouseX - (w - (stampColors.length * h))) / h);
+
+  // Change stamp
+  if ((iColor >= 0) && (iColor < stampColors.length)) {
+    cStamp = stampColors[iColor];
+  }
+  draw();
+}, false);
+
+// Refresh cards
+cHeader.addEventListener("dblclick", function(event) {
+  // Get Mouse Coordinates
+  let rect = cHeader.getBoundingClientRect();
+  let mouseX = event.clientX - rect.left;
+  let mouseY = event.clientY - rect.top;
+
+  // Determine if double click occurred on button
+  let w = cHeader.width;
+
+  // Create new cards
+  if ((mouseX > ((w / 2) - 60)) && (mouseX < ((w / 2) + 60))) {
+    reset();
+  }
+  draw();
+}, false);
+
+// Stamp all instances of a given number
 function stamp(num) {
   cards.forEach((card, iC) => {
     card.letters.forEach((letter, iL) => {
@@ -419,6 +337,7 @@ function stamp(num) {
   draw();
 }
 
+// Unstamp all instances of a given number
 function unstamp(num) {
   cards.forEach((card, iC) => {
     card.letters.forEach((letter, iL) => {
@@ -432,20 +351,4 @@ function unstamp(num) {
   draw();
 }
 
-
-
-/** OLD IMPLEMENTATION **/
-// Bind Event Handlers
-//document.getElementById("btnCreate").addEventListener("click", createCard);
-/**
-function createCard() {
-  let card = new BingoCard();
-  card.letters.forEach((col, i) => {
-    col.forEach((num, i) => {
-      document.getElementById(num.element).innerHTML = num.number;
-    });
-  });
-}
-**/
-// Initialize to random
-//createCard();
+reset();
