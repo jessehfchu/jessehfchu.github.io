@@ -328,7 +328,7 @@ function drawPortrait() {
   cards.forEach((card, iC) => {
     card.letters.forEach((letter, iL) => {
       letter.forEach((number, iN) => {
-        if (!number.stamped) {
+        if (number.stamped) {
           context.beginPath();
           context.arc(
             (canvas.width * (iC % 2) * 1 / 2) + (canvas.width * iL * 1 / 10) + (canvas.width * 1 / 20),
@@ -406,7 +406,31 @@ canvas.addEventListener("click", function(event) {
 
 reset();
 
+function stamp(num) {
+  cards.forEach((card, iC) => {
+    card.letters.forEach((letter, iL) => {
+      letter.forEach((number, iN) => {
+        if (number.number == num) {
+          number.stamped = true;
+        }
+      });
+    });
+  });
+  draw();
+}
 
+function unstamp(num) {
+  cards.forEach((card, iC) => {
+    card.letters.forEach((letter, iL) => {
+      letter.forEach((number, iN) => {
+        if (number.number == num) {
+          number.stamped = false;
+        }
+      });
+    });
+  });
+  draw();
+}
 
 
 
