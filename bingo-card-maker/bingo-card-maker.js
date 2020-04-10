@@ -201,7 +201,7 @@ function drawCard(card, index) {
   }
 
   // Text settings
-  let colors = ["mediumblue", "firebrick", "black", "darkgreen", "gold"];
+  let colors = ["mediumblue", "firebrick", "black", "darkgreen", "goldenrod"];
   let charHeader = ["B", "I", "N", "G", "O"];
 
   // Header Letters
