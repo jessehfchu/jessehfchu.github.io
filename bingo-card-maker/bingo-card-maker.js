@@ -32,7 +32,7 @@ iFace.src = imgs[0];
 iFace.onload = iLoad;
 
 // Stamp color
-stampColors = ["red", "orange", "gold", "green", "blue", "purple", "face"];
+stampColors = ["red", "orange", "gold", "green", "blue", "purple"];
 cStamp = "red";
 
 // Bingo Card Class
