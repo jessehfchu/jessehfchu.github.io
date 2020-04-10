@@ -101,7 +101,7 @@ function drawHeader() {
   for (let i = 0; i < stampColors.length; i++) {
     if (stampColors[i] == "face") {
       conHeader.globalAlpha = stampColors[i] == cStamp ? 1 : 0.6;
-      conHeader.drawImage(iFace, w - (stampColors.length * h) + (i * h), 0, iFace.width * h / iFace.height, h);
+      conHeader.drawImage(iFace, 14, 3, 119, 163, w - (stampColors.length * h) + (i * h), 0, 119 * h / 163, h);
       conHeader.globalAlpha = 1;
     }
     else {
@@ -240,9 +240,13 @@ function drawCard(card, index) {
           conCards.globalAlpha = 0.6;
           conCards.drawImage(
             iFace,
-            x + (w / 10) + (iL * w / 5) - ((iFace.width * d / iFace.height) / 2),
+            14,
+            3,
+            119,
+            163,
+            x + (w / 10) + (iL * w / 5) - ((119 * d / 163) / 2),
             y + (h * 19 / 100) + (iN * h * 9 / 50) - (d / 2),
-            iFace.width * d / iFace.height,
+            119 * d / 163,
             d
           );
         }
