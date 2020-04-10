@@ -1,3 +1,13 @@
+imgs = ["../img/CJWFace.png"];
+cILoaded = 0;
+
+function iLoad() {
+  cILoaded++;
+  if (cILoaded == imgs.length) {
+    reset();
+  }
+}
+
 /** Reference to canvas element **/
 cCards = document.getElementById("canvasCards");
 conCards = cCards.getContext("2d");
@@ -16,8 +26,13 @@ numbers = [
 // Bingo Cards Array
 cards = [];
 
+// Stamp image
+iFace = new Image();
+iFace.src = imgs[0];
+iFace.onload = iLoad;
+
 // Stamp color
-stampColors = ["red", "orange", "gold", "green", "blue", "purple"];
+stampColors = ["red", "orange", "gold", "green", "blue", "purple", "face"];
 cStamp = "red";
 
 // Bingo Card Class
@@ -84,15 +99,22 @@ function drawHeader() {
 
   // Stamp colors
   for (let i = 0; i < stampColors.length; i++) {
-    conHeader.fillStyle = stampColors[i];
-    conHeader.globalAlpha = stampColors[i] == cStamp ? 1 : 0.4;
-    conHeader.fillRect(w - (stampColors.length * h) + (i * h), 0, h, h);
-    conHeader.globalAlpha = 1;
-    conHeader.strokeStyle = "black";
-    conHeader.lineWidth = 3;
-    conHeader.beginPath();
-    conHeader.rect(w - (stampColors.length * h) + (i * h), 0, h, h);
-    conHeader.stroke();
+    if (stampColors[i] == "face") {
+      conHeader.globalAlpha = stampColors[i] == cStamp ? 1 : 0.6;
+      conHeader.drawImage(iFace, w - (stampColors.length * h) + (i * h), 0, iFace.width * h / iFace.height, h);
+      conHeader.globalAlpha = 1;
+    }
+    else {
+      conHeader.fillStyle = stampColors[i];
+      conHeader.globalAlpha = stampColors[i] == cStamp ? 1 : 0.4;
+      conHeader.fillRect(w - (stampColors.length * h) + (i * h), 0, h, h);
+      conHeader.globalAlpha = 1;
+      conHeader.strokeStyle = "black";
+      conHeader.lineWidth = 3;
+      conHeader.beginPath();
+      conHeader.rect(w - (stampColors.length * h) + (i * h), 0, h, h);
+      conHeader.stroke();
+    }
   }
 
   // Refresh Button
@@ -209,23 +231,38 @@ function drawCard(card, index) {
   });
 
   // Stamps
-  conCards.fillStyle = cStamp;
-  conCards.globalAlpha = 0.5;
+  let rad = Math.min(w * 9 / 100, h * 81 / 1000);
+  let d = 2 * rad;
   card.letters.forEach((letter, iL) => {
     letter.forEach((number, iN) => {
       if (number.stamped) {
-        conCards.beginPath();
-        conCards.arc(
-          x + (w / 10) + (iL * w / 5),
-          y + (h * 19 / 100) + (iN * h * 9 / 50),
-          Math.min(w * 9 / 100, h * 81 / 1000),
-          0,
-          2 * Math.PI
-        );
-        conCards.fill();
+        if (cStamp == "face") {
+          conCards.globalAlpha = 0.6;
+          conCards.drawImage(
+            iFace,
+            x + (w / 10) + (iL * w / 5) - ((iFace.width * d / iFace.height) / 2),
+            y + (h * 19 / 100) + (iN * h * 9 / 50) - (d / 2),
+            iFace.width * d / iFace.height,
+            d
+          );
+        }
+        else {
+          conCards.fillStyle = cStamp;
+          conCards.globalAlpha = 0.5;
+          conCards.beginPath();
+          conCards.arc(
+            x + (w / 10) + (iL * w / 5),
+            y + (h * 19 / 100) + (iN * h * 9 / 50),
+            rad,
+            0,
+            2 * Math.PI
+          );
+          conCards.fill();
+        }
       }
     });
   });
+  conCards.globalAlpha = 1;
 }
 
 function getHeaderFont() {
@@ -350,5 +387,3 @@ function unstamp(num) {
   });
   draw();
 }
-
-reset();
