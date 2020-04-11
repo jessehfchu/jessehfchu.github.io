@@ -1,9 +1,24 @@
-imgs = ["../img/CJWFace.png"];
+/** Image Loader **/
+images = [
+  {
+    "name" : "alien",
+    "path" : "../img/alien.png"
+  },
+  {
+    "name" : "crylaugh",
+    "path" : "../img/crylaugh.png"
+  },
+  {
+    "name" : "poop",
+    "path" : "../img/poop.png"
+  }
+];
 cILoaded = 0;
 
+/** Start page once all images are loaded **/
 function iLoad() {
   cILoaded++;
-  if (cILoaded == imgs.length) {
+  if (cILoaded == images.length) {
     reset();
   }
 }
@@ -26,14 +41,17 @@ numbers = [
 // Bingo Cards Array
 cards = [];
 
-// Stamp image
-iFace = new Image();
-iFace.src = imgs[0];
-iFace.onload = iLoad;
-
 // Stamp color
 stampColors = ["red", "orange", "gold", "green", "blue", "purple"];
 cStamp = "red";
+
+/** Load images **/
+images.forEach((img, i) => {
+  img["image"] = new Image();
+  img["image"].src = img["path"];
+  img["image"].onload = iLoad;
+  stampColors.push(img["name"]);
+});
 
 // Bingo Card Class
 class BingoCard {
@@ -99,14 +117,20 @@ function drawHeader() {
 
   // Stamp colors
   for (let i = 0; i < stampColors.length; i++) {
-    if (stampColors[i] == "face") {
+    if (images.findIndex(img => img.name == stampColors[i]) >= 0) {
+      let iStamp = images.find(img => img.name == stampColors[i]).image;
       conHeader.globalAlpha = stampColors[i] == cStamp ? 1 : 0.6;
-      conHeader.drawImage(iFace, 14, 3, 119, 163, w - (stampColors.length * h) + (i * h), 0, 119 * h / 163, h);
+      conHeader.drawImage(iStamp,
+        w - (stampColors.length * h) + (i * h),
+        0,
+        iStamp.width > iStamp.height ? h : iStamp.width * h / iStamp.height,
+        iStamp.width > iStamp.height ? iStamp.height * h / iStamp.width : h
+      );
       conHeader.globalAlpha = 1;
     }
     else {
       conHeader.fillStyle = stampColors[i];
-      conHeader.globalAlpha = stampColors[i] == cStamp ? 1 : 0.4;
+      conHeader.globalAlpha = stampColors[i] == cStamp ? 1 : 0.5;
       conHeader.fillRect(w - (stampColors.length * h) + (i * h), 0, h, h);
       conHeader.globalAlpha = 1;
       conHeader.strokeStyle = "black";
@@ -119,11 +143,11 @@ function drawHeader() {
 
   // Refresh Button
   conHeader.fillStyle = "grey";
-  conHeader.fillRect((w / 2) - 60, 0, 120, h);
+  conHeader.fillRect((w / 4) - 60, 0, 120, h);
   conHeader.strokeStyle = "darkgrey";
   conHeader.lineWidth = 3;
   conHeader.beginPath();
-  conHeader.rect((w / 2) - 60, 0, 120, h);
+  conHeader.rect((w / 4) - 60, 0, 120, h);
   conHeader.stroke();
 
   // Refresh Text
@@ -131,8 +155,8 @@ function drawHeader() {
   conHeader.textAlign = "center";
   conHeader.textBaseline = "middle";
   conHeader.fillStyle = "white";
-  conHeader.fillText("Double-Click", w / 2, h / 4);
-  conHeader.fillText("For New Cards", w / 2, h * 3 / 4);
+  conHeader.fillText("Double-Click", w / 4, h / 4);
+  conHeader.fillText("For New Cards", w / 4, h * 3 / 4);
 }
 
 // Determine how many rows of cards to display
@@ -232,22 +256,19 @@ function drawCard(card, index) {
 
   // Stamps
   let rad = Math.min(w * 9 / 100, h * 81 / 1000);
-  let d = 2 * rad;
+  let dia = 2 * rad;
   card.letters.forEach((letter, iL) => {
     letter.forEach((number, iN) => {
       if (number.stamped) {
-        if (cStamp == "face") {
+        if (images.findIndex(img => img.name == cStamp) >= 0) {
+          let iStamp = images.find(img => img.name == cStamp).image;
           conCards.globalAlpha = 0.6;
           conCards.drawImage(
-            iFace,
-            14,
-            3,
-            119,
-            163,
-            x + (w / 10) + (iL * w / 5) - ((119 * d / 163) / 2),
-            y + (h * 19 / 100) + (iN * h * 9 / 50) - (d / 2),
-            119 * d / 163,
-            d
+            iStamp,
+            x + (w / 10) + (iL * w / 5) - ((iStamp.width > iStamp.height ? dia : iStamp.width * dia / iStamp.height) / 2),
+            y + (h * 19 / 100) + (iN * h * 9 / 50) - ((iStamp.width > iStamp.height ? iStamp.height * dia / iStamp.width : dia) / 2),
+            iStamp.width > iStamp.height ? dia : iStamp.width * dia / iStamp.height,
+            iStamp.width > iStamp.height ? iStamp.height * dia / iStamp.width : dia
           );
         }
         else {
@@ -358,7 +379,7 @@ cHeader.addEventListener("dblclick", function(event) {
   let w = cHeader.width;
 
   // Create new cards
-  if ((mouseX > ((w / 2) - 60)) && (mouseX < ((w / 2) + 60))) {
+  if ((mouseX > ((w / 4) - 60)) && (mouseX < ((w / 4) + 60))) {
     reset();
   }
   draw();
