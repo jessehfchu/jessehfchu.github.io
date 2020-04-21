@@ -10,12 +10,12 @@ const eBtn = document.getElementById(btnID);
 
 a = ["K", "S", "T"];
 b = ["T", "P", "O", "G", "R"];
-c = ["H", "S", "E", "I"];
-d = ["O", "A", "D", "C", "N", "E"];
-e = ["P", "N", "O", "A", "C", "T"];
-f = ["O", "H", "N", "E"];
-g = ["E", "R", "L", "N", "C", "O"];
-h = ["E", "R", "O", "I", "M", "L", "H", "T", "P", "S", "A"];
+c = ["H", "E", "I"];
+d = ["A", "C", "E"];
+e = ["N", "A", "C"];
+f = ["O", "H"];
+g = ["E", "R", "L"];
+h = ["E", "R", "I", "M", "S"];
 
 list = [];
 
