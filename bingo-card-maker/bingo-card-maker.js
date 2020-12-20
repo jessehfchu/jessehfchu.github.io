@@ -11,6 +11,18 @@ images = [
   {
     "name" : "poop",
     "path" : "../img/poop.png"
+  },
+  {
+    "name" : "bbt",
+    "path" : "../img/bbt.png"
+  },
+  {
+    "name" : "middle",
+    "path" : "../img/middle.png"
+  },
+  {
+    "name" : "underage",
+    "path" : "../img/underage.png"
   }
 ];
 cILoaded = 0;
